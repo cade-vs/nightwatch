@@ -234,9 +234,8 @@ NWMainWindow::NWMainWindow()
     timer = new QTimer( this );
 
     connect( timer, SIGNAL(timeout()), this, SLOT(slotLoadCurrentImage()));
-
-    connect( tree, SIGNAL(itemActivated(QTreeWidgetItem *, int)), this, SLOT(slotItemActivated(QTreeWidgetItem *, int)));
-    connect( tree, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), this, SLOT(slotCurrentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)));
+    connect( tree,  SIGNAL(itemActivated(QTreeWidgetItem *, int)), this, SLOT(slotItemActivated(QTreeWidgetItem *, int)));
+    connect( tree,  SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), this, SLOT(slotCurrentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)));
 }
 
 NWMainWindow::~NWMainWindow()
@@ -577,81 +576,6 @@ void NWMainWindow::slotGoUp()
 
 /*****************************************************************************/
 
-void NWMainWindow::slotGoPrev()
-{
-  goPrevNext( -1 );
-};
-
-void NWMainWindow::slotGoNext()
-{
-  goPrevNext( +1 );
-}
-
-void NWMainWindow::slotGoPrevDir()
-{
-  goPrevNextDir( -1 );
-};
-
-void NWMainWindow::slotGoNextDir()
-{
-  goPrevNextDir( +1 );
-}
-
-void NWMainWindow::goPrevNext( int r, int skip_dirs )
-{
-  QTreeWidgetItem *lwi = tree->currentItem();
-
-  int i;
-  int start;
-
-  int x = tree->topLevelItemCount();
-
-  if( x == 0 )
-    {
-    return;
-    }
-
-  i = tree->indexOfTopLevelItem( lwi );
-  start = i;
-
-  //qDebug() << "CurrentItemStart: " << i << " " << lwi->text( 0 ) << " " << lwi->text( 1 );
-
-  if( x <= 1 or i < 0 ) return; // not found or empty list
-
-  while(4)
-    {
-    i += r;
-    lwi = NULL;
-    if( i >= x ) i = 0;
-    if( i <  0 ) i = x - 1;
-    if( i == start ) break;
-    lwi = tree->topLevelItem( i );
-    //qDebug() << "Searching: " << i << " " << lwi->text( 0 ) << " " << lwi->text( 1 );
-    if( skip_dirs && lwi->text( 0 ) == ITEM_TYPE_DIR ) continue;
-    break;
-    }
-  if( lwi )
-    {
-    //qDebug() << "CurrentItemFound: " << i << " " << lwi->text( 0 ) << " " << lwi->text( 1 );
-    tree->setCurrentItem( lwi );
-    enter( lwi );
-    //lwi = tree->currentItem();
-    //qDebug() << "CurrentItemFound: " << i << " " << lwi->text( 0 ) << " " << lwi->text( 1 );
-    }
-};
-
-void NWMainWindow::goPrevNextDir( int r )
-{
-  slotGoUp();
-  if( r > 0 )
-    goPrevNext( +1, 0 );
-  else
-    goPrevNext( -1, 0 );
-  enterCurrent();
-}
-
-/*****************************************************************************/
-
 void NWMainWindow::slotThumbs()
 {
   opt_thumbs = ! opt_thumbs;
@@ -764,7 +688,6 @@ void NWMainWindow::slotRandomItem()
   int n = int( r % x );
 
   tree->setCurrentItem( tree->topLevelItem( n ) );
-  slotGoNext();
 };
 
 void NWMainWindow::slotHelp()
@@ -811,9 +734,9 @@ void NWMainWindow::keyPressEvent ( QKeyEvent * e )
       case Qt::Key_Left  : slotGoUp(); break;
       case Qt::Key_Right : enter( tree->currentItem() ); break;
 
-      case Qt::Key_BracketLeft  : slotGoPrev(); break;
-      case Qt::Key_Space        :
-      case Qt::Key_BracketRight : slotGoNext(); break;
+//      case Qt::Key_BracketLeft  : slotGoPrev(); break;
+//      case Qt::Key_Space        :
+//      case Qt::Key_BracketRight : slotGoNext(); break;
       
 //      case Qt::Key_Slash        : toggleSortColumns(); break;
 
@@ -851,14 +774,14 @@ void NWMainWindow::keyPressEvent ( QKeyEvent * e )
             else
               switch( e->text().toLatin1().at(0) )
               {
-              case '[' : slotGoPrev(); break;
-              case ']' : slotGoNext(); break;
+//              case '[' : slotGoPrev(); break;
+//              case ']' : slotGoNext(); break;
 
-              case '\'':
-              case '{' : slotGoPrevDir(); break; // FIXME: not working?
+//              case '\'':
+//              case '{' : slotGoPrevDir(); break; // FIXME: not working?
 
-              case ';' :
-              case '}' : slotGoNextDir(); break; // FIXME: not working?
+//              case ';' :
+//              case '}' : slotGoNextDir(); break; // FIXME: not working?
 
               case '~' : slotHomeDir();   break;
               case '`' : slotChangeDir(); break;
@@ -964,7 +887,7 @@ void NWMainWindow::setupMenuBar()
 
     menu->addSeparator();
 
-    action = menu->addAction( tr("Go to &Random image"),   this, SLOT(slotRandomItem()), Qt::Key_Asterisk );
+    action = menu->addAction( tr("Go to &Random item"),   this, SLOT(slotRandomItem()), Qt::Key_Asterisk );
     action = menu->addAction( tr("Activate current item"),  this, SLOT(enterCurrent()), Qt::Key_Right );
 
     /*--------------------------------------------------------------------*/

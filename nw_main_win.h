@@ -122,12 +122,6 @@ class NWMainWindow : public QMainWindow
      void slotReloadDir();
      void slotShowDirsOnly();
 
-     void slotGoNext();
-     void slotGoPrev();
-
-     void slotGoNextDir();
-     void slotGoPrevDir();
-
      void slotSortColumn1();
      void slotSortColumn3();
 

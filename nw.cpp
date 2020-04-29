@@ -54,11 +54,14 @@ int main(int argc, char **argv)
   QStringList args = app.arguments();
 
   args.takeFirst(); // remove app name
-
+  
+  QString target_dir = ".";
+  
+  if( args.count() > 0 ) target_dir = args[0];
+  
   NWMainWindow *main_win = new NWMainWindow();
-  main_win->loadDir( QString( "." ) );
+  main_win->loadDir( target_dir );
   main_win->show();
-  main_win->poster->loadImage( ":/images/journey_by_t1na.jpg" );
 
   return app.exec();
 }
