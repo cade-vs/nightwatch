@@ -191,6 +191,10 @@ NWMainWindow::NWMainWindow()
 
     poster->loadImage( QString( ":/images/journey_by_t1na.jpg" ) );
 
+    timer = new QTimer( this );
+
+    connect( timer, SIGNAL(timeout()), this, SLOT(slotLoadCurrentImage()));
+
     connect( tree, SIGNAL(itemActivated(QTreeWidgetItem *, int)), this, SLOT(slotItemActivated(QTreeWidgetItem *, int)));
     connect( tree, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), this, SLOT(slotCurrentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)));
 }
@@ -464,11 +468,15 @@ void NWMainWindow::slotItemActivated( QTreeWidgetItem *item, int column )
 
 void NWMainWindow::slotCurrentItemChanged( QTreeWidgetItem *current, QTreeWidgetItem *previous )
 {
-  qDebug() << "slot item changed begin";
-  if ( ! current ) return;
-  qDebug() << "slot item changed begin more";
+  timer->start( 100 );
+}
 
+void NWMainWindow::slotLoadCurrentImage()
+{
+  timer->stop();
   QString new_path = cdir.absolutePath();
+
+  QTreeWidgetItem *current = tree->currentItem();
 
   QString item_name = current->text( 1 );
   QString item_name_src;

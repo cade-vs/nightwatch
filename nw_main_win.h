@@ -19,12 +19,13 @@
 #include <QPushButton>
 #include <QWidget>
 #include <QImage>
+#include <QTimer>
 
 class NWPoster : public QWidget
 {
     Q_OBJECT
 
-    QImage im;
+    QImage  im;
 
   public:
     void loadImage( const QString file_name );
@@ -60,6 +61,7 @@ class NWMainWindow : public QMainWindow
 
      NWTreeWidget   *tree;
      NWPoster       *poster;
+     QTimer         *timer;
 
      QDir            cdir;
 
@@ -101,6 +103,7 @@ class NWMainWindow : public QMainWindow
 
      void slotItemActivated( QTreeWidgetItem *item, int column );
      void slotCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+     void slotLoadCurrentImage();
 
      void slotNewWindow();
      void slotGoUp();
@@ -128,6 +131,7 @@ class NWMainWindow : public QMainWindow
 
      void slotHelp();
      void slotAbout();
+     
 
  private:
      void setupMenuBar();
