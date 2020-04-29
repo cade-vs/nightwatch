@@ -14,6 +14,7 @@
 #include <QStatusBar>
 #include <QFile>
 #include <QFont>
+#include <QRawFont>
 #include <QDataStream>
 #include <QFileDialog>
 #include <QPainter>
@@ -252,7 +253,7 @@ void NWMainWindow::loadDir( QString path )
     item->setText( 3, fi.lastModified().toString( "yyyy-MM-dd hh:mm:ss" ) );
     item->setTextAlignment( 2, Qt::AlignRight );
 
-    item->setFont( 0, font_big   );
+    item->setFont( 0, font_small );
     item->setFont( 1, font_big   );
     item->setFont( 2, font_small );
     item->setFont( 3, font_small );
@@ -276,6 +277,7 @@ void NWMainWindow::loadDir( QString path )
   if( opt_thumbs )
     loadThumbs();
     
+  tree->resizeColumnToContents( 0 );
   tree->resizeColumnToContents( 2 );
   tree->resizeColumnToContents( 3 );
 };
@@ -303,7 +305,11 @@ void NWPoster::paintEvent( QPaintEvent * e )
 {
   QPainter painter( this );
   if ( im.isNull() ) return;
-  painter.drawImage( 0, 0, im );
+  
+  int ox = ( width()  - im.width()  ) / 2;
+  int oy = ( height() - im.height() ) / 2;
+  
+  painter.drawImage( ox, oy, im );
 };
 
 /*****************************************************************************/
