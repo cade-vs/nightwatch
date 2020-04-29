@@ -83,6 +83,39 @@ void NWTreeWidget::findNext( QString str, int full_match )
     }
 }
 
+void NWTreeWidget::findNextThe( QString str )
+{
+  QTreeWidgetItem *lwi = currentItem();
+
+  int i;
+  int start;
+
+  int x = topLevelItemCount();
+
+  i = indexOfTopLevelItem( lwi );
+  start = i;
+
+  if( x <= 1 or i < 0 ) return; // not found or empty list
+
+  while(4)
+    {
+    i++;
+    if( i >= x ) i = 0;
+    if( i == start ) break;
+    lwi = topLevelItem( i );
+
+    QString name = lwi->text( 1 ).toUpper();
+    name.replace( QRegularExpression( "THE[ .]" ), "" );
+    if( name.indexOf( str.toUpper() ) == 0 ) break;
+    lwi = NULL;
+    }
+  if( lwi )
+    {
+    setCurrentItem( lwi );
+    scrollToItem( lwi );
+    }
+}
+
 
 void NWTreeWidget::keyPressEvent ( QKeyEvent * e )
 {
@@ -93,7 +126,7 @@ void NWTreeWidget::keyPressEvent ( QKeyEvent * e )
 
   if( ( m == Qt::ShiftModifier || m == Qt::NoModifier ) && a >= '!' && a <= 'z' )
     {
-    findNext( QString( QVariant( a ).toChar() ) );
+    findNextThe( QString( QVariant( a ).toChar() ) );
     }
   else
     {
@@ -119,22 +152,28 @@ NWMainWindow::NWMainWindow()
     setAttribute( Qt::WA_DeleteOnClose );
 
     setObjectName( "NWMainWindow" );
-    setWindowTitle( QString() + " NW " + NW_VERSION );
+    setWindowTitle( QString() + " NightWatch " + NW_VERSION );
 
     // crashes ICEWM :(
     //setWindowIcon( QIcon( QPixmap( ":/images/nw_icon_128x128.png" ) ) );
 
-    resize( 900, 400 );
+    int x = Settings.value( "x", 100 ).toInt();
+    int y = Settings.value( "y", 100 ).toInt();
+    int w = Settings.value( "w", 900 ).toInt();
+    int h = Settings.value( "h", 400 ).toInt();
+
+    resize( w, h );
+    move( x, y );
 
     poster = new NWPoster();
     //poster->setSizePolicy( QSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed ) );
-    poster->setMinimumSize( 300, 400 );
-    poster->resize( 300, 400 );
+    //poster->setMinimumSize( 300, 400 );
+    //poster->resize( 300, 400 );
 
     tree = new NWTreeWidget();
     //tree->setSizePolicy( QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding ) );
-    tree->setMinimumSize( 600, 400 );
-    tree->resize( 600, 400 );
+    //tree->setMinimumSize( 600, 400 );
+    //tree->resize( 600, 400 );
 
     QTreeWidgetItem *header = new QTreeWidgetItem();
     header->setText( 0, "Type" );
@@ -216,7 +255,7 @@ void NWMainWindow::loadDir( QString path )
 
   QString new_path = cdir.absolutePath();
 
-  setWindowTitle( QString() + " NW " + NW_VERSION + ": " + new_path );
+  setWindowTitle( QString() + " NightWatch " + NW_VERSION + ": " + new_path );
 
   QString save_item_name;
   if( tree->topLevelItemCount() > 0 ) save_item_name = tree->currentItem()->text( 1 );
@@ -228,8 +267,8 @@ void NWMainWindow::loadDir( QString path )
 
   QTreeWidgetItem *current = NULL;
 
-  QFont font_big(   QFont( "Courier", 24, QFont::Bold, false ) );
-  QFont font_small( QFont( "Courier", 12, QFont::Bold, false ) );
+  QFont font_big(   QFont( "Coolvetica", 24, QFont::Bold, false ) );
+  QFont font_small( QFont( "Coolvetica", 12, QFont::Bold, false ) );
 
   tree->clear();
   for( int i = 0; i < info_list.count(); i++ )
@@ -287,20 +326,16 @@ void NWMainWindow::loadDir( QString path )
 
 void NWPoster::loadImage( const QString file_name )
 {
-  // file_name = ":/images/Half_Face_by_uzorpatorica.jpg";
-
-  qDebug() << file_name;
-
-  if( ! im.load( file_name ) ) im.load( QString( ":/images/journey_by_t1na.jpg" ) );
-
-  //qDebug() << "REVIEW: [" + QString( file_name ) + "] w:" << QVariant( ow ).toString() << " h:" << QVariant( oh ).toString();
-
-  im = im.scaled( QSize( width(), height() ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
-
-  update();
-
-  qDebug() << "scaled to: " << im.width() << im.height();
+  fn = file_name;
+  rescaleImage();
 };
+
+void NWPoster::rescaleImage()
+{
+  if( ! im.load( fn ) ) im.load( QString( ":/images/journey_by_t1na.jpg" ) );
+  im = im.scaled( QSize( width(), height() ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
+  update();
+}
 
 void NWPoster::paintEvent( QPaintEvent * e )
 {
@@ -484,6 +519,7 @@ void NWMainWindow::slotLoadCurrentImage()
   QString new_path = cdir.absolutePath();
 
   QTreeWidgetItem *current = tree->currentItem();
+  if( ! current ) return;
 
   QString item_name = current->text( 1 );
   QString item_name_src;
@@ -738,8 +774,7 @@ void NWMainWindow::slotHelp()
 
 void NWMainWindow::slotAbout()
 {
-  // view->load( ":/images/Green_woman_by_ValentinaKallias_edit2.png" );
-  // view->setWindowTitle( QString() + " NW " + NW_VERSION );
+  poster->loadImage( ":/images/journey_by_t1na.jpg" );
 };
 
 /*****************************************************************************/
@@ -837,6 +872,24 @@ void NWMainWindow::keyPressEvent ( QKeyEvent * e )
               }
       }
     }
+}
+
+void NWMainWindow::resizeEvent(QResizeEvent *event)
+{
+  poster->rescaleImage();
+
+  Settings.setValue( "x", x() );
+  Settings.setValue( "y", y() );
+  Settings.setValue( "w", width()  );
+  Settings.setValue( "h", height() );
+};
+
+void NWMainWindow::moveEvent(QMoveEvent *event)
+{
+  Settings.setValue( "x", x() );
+  Settings.setValue( "y", y() );
+  Settings.setValue( "w", width()  );
+  Settings.setValue( "h", height() );
 }
 
 /*****************************************************************************/

@@ -25,10 +25,12 @@ class NWPoster : public QWidget
 {
     Q_OBJECT
 
+    QString fn;
     QImage  im;
 
   public:
     void loadImage( const QString file_name );
+    void rescaleImage();
 
   protected:
     void paintEvent( QPaintEvent * e );
@@ -44,6 +46,7 @@ class NWTreeWidget : public QTreeWidget
      NWTreeWidget( QWidget *parent );
 
      void findNext( QString str, int full_match = 0 );
+     void findNextThe( QString str );
 
  protected:
      void keyPressEvent(QKeyEvent *event);
@@ -91,7 +94,8 @@ class NWMainWindow : public QMainWindow
  protected:
      void showEvent(QShowEvent *event);
      void keyPressEvent(QKeyEvent *event);
-
+     void resizeEvent(QResizeEvent *event);
+     void moveEvent(QMoveEvent *event);
  public slots:
      void toggleSortColumns();
 

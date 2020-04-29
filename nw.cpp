@@ -57,10 +57,8 @@ int main(int argc, char **argv)
 
   NWMainWindow *main_win = new NWMainWindow();
   main_win->loadDir( QString( "." ) );
-  //main_win->move( view->width() + 10, view->height() - main_win->height() );
-  main_win->move( 100, 100 );
-//  main_win->resize( 1280, 768 );
   main_win->show();
+  main_win->poster->loadImage( ":/images/journey_by_t1na.jpg" );
 
   return app.exec();
 }
