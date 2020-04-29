@@ -45,7 +45,7 @@ int main(int argc, char **argv)
   opt_create_thumbs        = Settings.value( "create_thumbs", 0 ).toInt();
   opt_create_jpeg_thumbs   = Settings.value( "create_jpeg_thumbs", 0 ).toInt();
   opt_create_smooth_thumbs = Settings.value( "create_smooth_thumbs", 1 ).toInt();
-  opt_show_dir_thumbs      = Settings.value( "opt_show_dir_thumbs", 1 ).toInt();
+  opt_show_dir_thumbs      = Settings.value( "opt_show_dir_thumbs", 0 ).toInt();
   opt_use_toolbar          = Settings.value( "use_toolbar", 1 ).toInt();
 
   movies_extensions_filter = Settings.value( "movies_extensions_filter", QString( DEFAULT_MOVIES_EXTENSIONS_FILTER ) ).toString();
@@ -59,7 +59,7 @@ int main(int argc, char **argv)
   main_win->loadDir( QString( "." ) );
   //main_win->move( view->width() + 10, view->height() - main_win->height() );
   main_win->move( 100, 100 );
-  main_win->resize( 1280, 768 );
+//  main_win->resize( 1280, 768 );
   main_win->show();
 
   return app.exec();

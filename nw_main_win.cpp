@@ -24,6 +24,11 @@
 #include <QPixmap>
 #include <QCryptographicHash>
 #include <QProcess>
+#include <QHBoxLayout>
+#include <QGridLayout>
+#include <QSizePolicy>
+#include <QPen>
+#include <QColor>
 
 #include <QTreeWidgetItem>
 #include <QAbstractItemView>
@@ -38,6 +43,11 @@
 
 NWTreeWidget::NWTreeWidget( QWidget *parent )
      : QTreeWidget( parent )
+{
+}
+
+NWTreeWidget::NWTreeWidget()
+     : QTreeWidget()
 {
 }
 
@@ -113,10 +123,17 @@ NWMainWindow::NWMainWindow()
     // crashes ICEWM :(
     //setWindowIcon( QIcon( QPixmap( ":/images/nw_icon_128x128.png" ) ) );
 
-    resize( 640, 400 );
+    resize( 900, 400 );
 
-    tree = new NWTreeWidget( this );
-    tree->setMinimumSize( 400, 200 );
+    poster = new NWPoster();
+    //poster->setSizePolicy( QSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed ) );
+    poster->setMinimumSize( 300, 400 );
+    poster->resize( 300, 400 );
+
+    tree = new NWTreeWidget();
+    //tree->setSizePolicy( QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding ) );
+    tree->setMinimumSize( 600, 400 );
+    tree->resize( 600, 400 );
 
     QTreeWidgetItem *header = new QTreeWidgetItem();
     header->setText( 0, "Type" );
@@ -142,19 +159,46 @@ NWMainWindow::NWMainWindow()
 
     tree->setSelectionMode( QAbstractItemView::ExtendedSelection );
 
-    setCentralWidget( tree );
+//    setCentralWidget( tree );
 
     setupMenuBar();
 
     //statusBar()->showMessage( "." );
 
     //loadDir( QString( "." ) );
+    
+    QWidget *central_widget = new QWidget;
+    QHBoxLayout *layout = new QHBoxLayout( central_widget );
+//    QGridLayout *layout = new QGridLayout( this );
+
+
+    layout->addWidget( poster, 1 );
+    layout->addWidget( tree,   2 );
+
+    layout->setStretchFactor( poster, 1 );
+    layout->setStretchFactor( tree,   2 );
+    //layout->addStretch();
+    //layout->addWidget( poster, 0, 0 );
+    //layout->addWidget( tree,   0, 1 );
+    
+    //layout->setStretch( 0, 10 );
+    //layout->setStretch( 1, 20 );
+    
+    layout->setSpacing( 0 );
+ 
+    
+    setCentralWidget( central_widget );
+
+    poster->loadImage( QString( ":/images/journey_by_t1na.jpg" ) );
 
     connect( tree, SIGNAL(itemActivated(QTreeWidgetItem *, int)), this, SLOT(slotItemActivated(QTreeWidgetItem *, int)));
+    connect( tree, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), this, SLOT(slotCurrentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)));
 }
 
 NWMainWindow::~NWMainWindow()
 {
+  delete poster;
+  delete tree;
 }
 
 /*****************************************************************************/
@@ -230,6 +274,32 @@ void NWMainWindow::loadDir( QString path )
     
   tree->resizeColumnToContents( 2 );
   tree->resizeColumnToContents( 3 );
+};
+
+/*****************************************************************************/
+
+void NWPoster::loadImage( const QString file_name )
+{
+  // file_name = ":/images/Half_Face_by_uzorpatorica.jpg";
+
+  qDebug() << file_name;
+
+  if( ! im.load( file_name ) ) im.load( QString( ":/images/journey_by_t1na.jpg" ) );
+
+  //qDebug() << "REVIEW: [" + QString( file_name ) + "] w:" << QVariant( ow ).toString() << " h:" << QVariant( oh ).toString();
+
+  im = im.scaled( QSize( width(), height() ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
+
+  update();
+
+  qDebug() << "scaled to: " << im.width() << im.height();
+};
+
+void NWPoster::paintEvent( QPaintEvent * e )
+{
+  QPainter painter( this );
+  if ( im.isNull() ) return;
+  painter.drawImage( 0, 0, im );
 };
 
 /*****************************************************************************/
@@ -392,12 +462,57 @@ void NWMainWindow::slotItemActivated( QTreeWidgetItem *item, int column )
   enter( item );
 };
 
+void NWMainWindow::slotCurrentItemChanged( QTreeWidgetItem *current, QTreeWidgetItem *previous )
+{
+  qDebug() << "slot item changed begin";
+  if ( ! current ) return;
+  qDebug() << "slot item changed begin more";
+
+  QString new_path = cdir.absolutePath();
+
+  QString item_name = current->text( 1 );
+  QString item_name_src;
+
+  if( current->text( 0 ) == ITEM_TYPE_DIR )
+    {
+    QDir tdir;
+    tdir.cd( new_path + "/" + item_name );
+
+    QStringList filters;
+    filters.append( QString( "*" ) );
+
+    QFileInfoList info_list = tdir.entryInfoList( filters );
+
+    for( int i = 0; i < info_list.count(); i++ )
+      {
+      QFileInfo fi = info_list.at( i );
+
+      if( fi.fileName() == "."  ) continue;
+      if( fi.fileName() == ".." ) continue;
+
+      QString ext = "." + fi.suffix() + ".";
+      if( ! fi.isDir() && images_extensions_filter.indexOf( ext.toUpper() ) < 0 ) continue;
+
+      item_name_src = item_name + "/" + fi.fileName();
+      break;
+      }
+    }
+  else
+    {
+    item_name_src = item_name;
+    item_name_src.replace( QRegularExpression( "\\.[^.]+$" ), ".jpg" ); // TODO: find optional ext, jpg, jpeg, png, etc.
+    }  
+
+  QString file_name = new_path + "/" + item_name_src;
+  
+  poster->loadImage( file_name );
+}
+
 /*****************************************************************************/
 
 void NWMainWindow::slotNewWindow()
 {
   NWMainWindow *new_mainwin = new NWMainWindow();
-  new_mainwin->resize(600, 400);
   new_mainwin->show();
   new_mainwin->loadDir( cdir.absolutePath() );
 };

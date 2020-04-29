@@ -17,6 +17,21 @@
 #include <QString>
 #include <QDialog>
 #include <QPushButton>
+#include <QWidget>
+#include <QImage>
+
+class NWPoster : public QWidget
+{
+    Q_OBJECT
+
+    QImage im;
+
+  public:
+    void loadImage( const QString file_name );
+
+  protected:
+    void paintEvent( QPaintEvent * e );
+};
 
 class NWTreeWidget : public QTreeWidget
 {
@@ -24,6 +39,7 @@ class NWTreeWidget : public QTreeWidget
      Q_OBJECT
 
  public:
+     NWTreeWidget();
      NWTreeWidget( QWidget *parent );
 
      void findNext( QString str, int full_match = 0 );
@@ -41,7 +57,9 @@ class NWMainWindow : public QMainWindow
 
  public:
 
+
      NWTreeWidget   *tree;
+     NWPoster       *poster;
 
      QDir            cdir;
 
@@ -82,6 +100,7 @@ class NWMainWindow : public QMainWindow
      void switchLayoutDirection();
 
      void slotItemActivated( QTreeWidgetItem *item, int column );
+     void slotCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
 
      void slotNewWindow();
      void slotGoUp();
