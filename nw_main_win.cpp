@@ -278,6 +278,7 @@ void NWMainWindow::loadDir( QString path )
     loadThumbs();
     
   tree->resizeColumnToContents( 0 );
+  tree->resizeColumnToContents( 1 );
   tree->resizeColumnToContents( 2 );
   tree->resizeColumnToContents( 3 );
 };
@@ -704,7 +705,7 @@ void NWMainWindow::toggleSortColumns()
     sortColumn( 3 );  
     statusBar()->showMessage( QString( tr( "Sort entries by MODIFY TIME" ) ) );
     }
-    
+  tree->scrollToItem( tree->currentItem() );  
 }
 
 void NWMainWindow::slotSortColumn1()
