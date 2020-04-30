@@ -28,6 +28,7 @@
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QSizePolicy>
+#include <QIcon>
 #include <QPen>
 #include <QColor>
 
@@ -39,6 +40,14 @@
 #include "nw.h"
 #include "nw_main_win.h"
 #include "nw_help.h"
+
+
+/*****************************************************************************/
+
+NWTreeWidgetItem::NWTreeWidgetItem()
+     : QTreeWidgetItem( 10001 )
+{
+}
 
 /*****************************************************************************/
 
@@ -54,7 +63,7 @@ NWTreeWidget::NWTreeWidget()
 
 void NWTreeWidget::findNext( QString str, int full_match )
 {
-  QTreeWidgetItem *lwi = currentItem();
+  NWTreeWidgetItem *lwi = (NWTreeWidgetItem*)currentItem();
 
   int i;
   int start;
@@ -71,7 +80,7 @@ void NWTreeWidget::findNext( QString str, int full_match )
     i++;
     if( i >= x ) i = 0;
     if( i == start ) break;
-    lwi = topLevelItem( i );
+    lwi = (NWTreeWidgetItem*)topLevelItem( i );
     if(   full_match && lwi->text( 1 ).toUpper() == str.toUpper() ) break;
     if( ! full_match && lwi->text( 1 ).toUpper().indexOf( str.toUpper() ) == 0 ) break;
     lwi = NULL;
@@ -85,7 +94,7 @@ void NWTreeWidget::findNext( QString str, int full_match )
 
 void NWTreeWidget::findNextThe( QString str )
 {
-  QTreeWidgetItem *lwi = currentItem();
+  NWTreeWidgetItem *lwi = (NWTreeWidgetItem*)currentItem();
 
   int i;
   int start;
@@ -102,10 +111,9 @@ void NWTreeWidget::findNextThe( QString str )
     i++;
     if( i >= x ) i = 0;
     if( i == start ) break;
-    lwi = topLevelItem( i );
+    lwi = (NWTreeWidgetItem*)topLevelItem( i );
 
     QString name = lwi->text( 1 ).toUpper();
-    name.replace( QRegularExpression( "THE[ .]" ), "" );
     if( name.indexOf( str.toUpper() ) == 0 ) break;
     lwi = NULL;
     }
@@ -175,7 +183,8 @@ NWMainWindow::NWMainWindow()
     //tree->setMinimumSize( 600, 400 );
     //tree->resize( 600, 400 );
 
-    QTreeWidgetItem *header = new QTreeWidgetItem();
+    NWTreeWidgetItem *header = new NWTreeWidgetItem();
+
     header->setText( 0, "Type" );
     header->setText( 1, "Name" );
     header->setText( 2, "Size" );
@@ -264,10 +273,13 @@ void NWMainWindow::loadDir( QString path )
 
   QFileInfoList info_list = cdir.entryInfoList( filters );
 
-  QTreeWidgetItem *current = NULL;
+  NWTreeWidgetItem *current = NULL;
 
   QFont font_big(   QFont( "Coolvetica", 24, QFont::Bold, false ) );
   QFont font_small( QFont( "Coolvetica", 12, QFont::Bold, false ) );
+  
+  QIcon icon_video(  ":/images/video-x-generic.png" );
+  QIcon icon_folder( ":/images/folder.png" );
 
   tree->clear();
   for( int i = 0; i < info_list.count(); i++ )
@@ -284,8 +296,25 @@ void NWMainWindow::loadDir( QString path )
 
     QString file_name = fi.fileName();
 
-    QTreeWidgetItem *item = new QTreeWidgetItem();
-    item->setText( 0, fi.isDir() ? ITEM_TYPE_DIR : "" );
+    NWTreeWidgetItem *item = new NWTreeWidgetItem();
+
+    if( fi.isDir() )
+      {
+      item->is_dir = 1;
+      //item->setText( 0, ITEM_TYPE_DIR );
+      item->setIcon( 0, icon_folder );
+      }
+    else  
+      {
+      item->is_dir = 0;
+      item->setIcon( 0, icon_video  );
+      }
+
+    item->fn = file_name;
+
+    file_name.replace( QRegularExpression( "[_.]" ), " " );
+    file_name.replace( QRegularExpression( "^THE (.+)", QRegularExpression::CaseInsensitiveOption ), "\\1 [The *]" );
+    
     item->setText( 1, file_name );
     item->setText( 2, fi.isDir() ? "" : QVariant( fi.size() / 1024 / 1024 ).toString() + " MB" );
     item->setText( 3, fi.lastModified().toString( "yyyy-MM-dd hh:mm:ss" ) );
@@ -365,14 +394,14 @@ void NWMainWindow::loadThumbs()
 
     if( i >= tree->topLevelItemCount() ) return;
 
-    QTreeWidgetItem *item = tree->topLevelItem( i );
+    NWTreeWidgetItem *item = (NWTreeWidgetItem*)tree->topLevelItem( i );
 
     //qDebug() << tree->topLevelItemCount() << " | " << i << " | " << item;
 
-    QString item_name = item->text( 1 );
+    QString item_name = item->fn;
     QString item_name_src;
 
-    if( item->text( 0 ) == ITEM_TYPE_DIR )
+    if( item->is_dir )
       {
       if( ! opt_show_dir_thumbs ) continue;
 
@@ -481,14 +510,16 @@ void NWMainWindow::goToDir( int mode )
 void NWMainWindow::enter( QTreeWidgetItem *item )
 {
   if( ! item ) return;
-  if( item->text( 0 ) == ITEM_TYPE_DIR )
+
+  NWTreeWidgetItem *nw_item = (NWTreeWidgetItem*)item;
+
+  if( nw_item->is_dir )
     {
-    loadDir( item->text( 1 ) );
+    loadDir( nw_item->fn );
     }
   else
     {
-    // TODO: start mplayer here! view->load( cdir.absolutePath() + "/" + item->text( 1 ) );
-    QStringList exec_args = { cdir.absolutePath() + "/" + item->text( 1 ) };
+    QStringList exec_args = { cdir.absolutePath() + "/" + nw_item->fn };
     QProcess mpl;
     mpl.execute( "nw-movie-player", exec_args );
     mpl.waitForFinished();
@@ -517,13 +548,13 @@ void NWMainWindow::slotLoadCurrentImage()
   timer->stop();
   QString new_path = cdir.absolutePath();
 
-  QTreeWidgetItem *current = tree->currentItem();
+  NWTreeWidgetItem *current = (NWTreeWidgetItem*)tree->currentItem();
   if( ! current ) return;
 
-  QString item_name = current->text( 1 );
+  QString item_name = current->fn;
   QString item_name_src;
 
-  if( current->text( 0 ) == ITEM_TYPE_DIR )
+  if( current->is_dir )
     {
     QDir tdir;
     tdir.cd( new_path + "/" + item_name );
@@ -556,7 +587,7 @@ void NWMainWindow::slotLoadCurrentImage()
 
   QString file_name = new_path + "/" + item_name_src;
 
-  qDebug() << "Found image for current item: " + file_name;
+//  qDebug() << "Found image for current item: " + file_name;
   
   poster->loadImage( file_name );
 }

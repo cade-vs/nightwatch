@@ -21,6 +21,16 @@
 #include <QImage>
 #include <QTimer>
 
+class NWTreeWidgetItem : public QTreeWidgetItem
+{
+
+  public:
+    NWTreeWidgetItem();
+    
+    QString fn;
+    int     is_dir;
+};
+
 class NWPoster : public QWidget
 {
     Q_OBJECT
@@ -106,7 +116,7 @@ class NWMainWindow : public QMainWindow
      void switchLayoutDirection();
 
      void slotItemActivated( QTreeWidgetItem *item, int column );
-     void slotCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+     void slotCurrentItemChanged( QTreeWidgetItem *current, QTreeWidgetItem *previous );
      void slotLoadCurrentImage();
 
      void slotNewWindow();
