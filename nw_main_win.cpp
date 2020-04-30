@@ -541,7 +541,8 @@ void NWMainWindow::slotLoadCurrentImage()
       if( fi.fileName() == ".." ) continue;
 
       QString ext = "." + fi.suffix() + ".";
-      if( ! fi.isDir() && images_extensions_filter.indexOf( ext.toUpper() ) < 0 ) continue;
+
+      if( fi.isDir() || images_extensions_filter.indexOf( ext.toUpper() ) < 0 ) continue;
 
       item_name_src = item_name + "/" + fi.fileName();
       break;
@@ -554,6 +555,8 @@ void NWMainWindow::slotLoadCurrentImage()
     }  
 
   QString file_name = new_path + "/" + item_name_src;
+
+  qDebug() << "Found image for current item: " + file_name;
   
   poster->loadImage( file_name );
 }
