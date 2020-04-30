@@ -312,6 +312,8 @@ void NWMainWindow::loadDir( QString path )
 
     item->fn = file_name;
 
+    if( last_path == new_path + "/" + file_name ) current = item;
+
     file_name.replace( QRegularExpression( "[_.]" ), " " );
     file_name.replace( QRegularExpression( "^THE (.+)", QRegularExpression::CaseInsensitiveOption ), "\\1 [The *]" );
     
@@ -324,8 +326,6 @@ void NWMainWindow::loadDir( QString path )
     item->setFont( 1, font_big   );
     item->setFont( 2, font_small );
     item->setFont( 3, font_small );
-
-    if( last_path == new_path + "/" + file_name ) current = item;
 
     tree->addTopLevelItem( item );
     }
@@ -543,53 +543,58 @@ void NWMainWindow::slotCurrentItemChanged( QTreeWidgetItem *current, QTreeWidget
   timer->start( 100 );
 }
 
+
+QString find_first_image_in_dir( QString dir )
+{
+  QDir tdir;
+  tdir.cd( dir );
+
+  QStringList filters = { "*" };
+
+  QFileInfoList info_list = tdir.entryInfoList( filters );
+
+  for( int i = 0; i < info_list.count(); i++ )
+    {
+    QFileInfo fi = info_list.at( i );
+
+    if( fi.fileName() == "."  ) continue;
+    if( fi.fileName() == ".." ) continue;
+
+    QString ext = "." + fi.suffix() + ".";
+
+    if( fi.isDir() || images_extensions_filter.indexOf( ext.toUpper() ) < 0 ) continue;
+
+    return QString( dir + "/" + fi.fileName() );
+    }
+    
+  return QString();  
+}
+
 void NWMainWindow::slotLoadCurrentImage()
 {
   timer->stop();
-  QString new_path = cdir.absolutePath();
+  QString abs_path = cdir.absolutePath();
 
   NWTreeWidgetItem *current = (NWTreeWidgetItem*)tree->currentItem();
   if( ! current ) return;
 
   QString item_name = current->fn;
-  QString item_name_src;
+  QString found_image_name;
 
   if( current->is_dir )
     {
-    QDir tdir;
-    tdir.cd( new_path + "/" + item_name );
-
-    QStringList filters;
-    filters.append( QString( "*" ) );
-
-    QFileInfoList info_list = tdir.entryInfoList( filters );
-
-    for( int i = 0; i < info_list.count(); i++ )
-      {
-      QFileInfo fi = info_list.at( i );
-
-      if( fi.fileName() == "."  ) continue;
-      if( fi.fileName() == ".." ) continue;
-
-      QString ext = "." + fi.suffix() + ".";
-
-      if( fi.isDir() || images_extensions_filter.indexOf( ext.toUpper() ) < 0 ) continue;
-
-      item_name_src = item_name + "/" + fi.fileName();
-      break;
-      }
+    found_image_name = find_first_image_in_dir( abs_path + "/" + item_name );
     }
   else
     {
-    item_name_src = item_name;
-    item_name_src.replace( QRegularExpression( "\\.[^.]+$" ), ".jpg" ); // TODO: find optional ext, jpg, jpeg, png, etc.
+    found_image_name = abs_path + "/" + item_name;
+    found_image_name.replace( QRegularExpression( "\\.[^.]+$" ), ".jpg" ); // TODO: find optional ext, jpg, jpeg, png, etc.
     }  
 
-  QString file_name = new_path + "/" + item_name_src;
+  if( ! QFile::exists( found_image_name ) )
+    found_image_name = find_first_image_in_dir( abs_path );
 
-//  qDebug() << "Found image for current item: " + file_name;
-  
-  poster->loadImage( file_name );
+  poster->loadImage( found_image_name );
 }
 
 /*****************************************************************************/
