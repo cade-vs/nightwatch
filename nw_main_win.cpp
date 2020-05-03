@@ -344,9 +344,7 @@ void NWMainWindow::loadDir( QString path, int mode )
   if( current )
     tree->setCurrentItem( current );
 
-  qDebug() << "load dir mode = " << mode;
-
-  statusBar()->showMessage( QString( tr( "Loaded items" ) ) + ": " + QVariant( tree->topLevelItemCount() ).toString() );
+  statusBar()->showMessage( QString() + "Movies count: " + QVariant( movies_count ).toString() );
 
   tree->resizeColumnToContents( 0 );
   tree->resizeColumnToContents( 1 );
@@ -435,7 +433,7 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
       else
         {  
         auto_play_timer->start( 4000 );
-        statusBar()->showMessage( "*** Auto-Play is active. Press any navigation key to cancel ***" );
+        statusBar()->showMessage( "*** Auto-Play is active for the next " + QVariant( auto_play - 1 ).toString() + " movie(s). Press any navigation key to cancel ***" );
         }
       }
     }
