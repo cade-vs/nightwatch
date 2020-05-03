@@ -31,6 +31,7 @@
 #include <QIcon>
 #include <QPen>
 #include <QColor>
+#include <QMenu>
 
 #include <QTreeWidgetItem>
 #include <QAbstractItemView>
@@ -742,6 +743,29 @@ void NWMainWindow::slotAbout()
   poster->loadImage( ":/images/journey_by_t1na.jpg" );
 };
 
+void NWMainWindow::slotKeypadMenu()
+{
+    QFont menu_font(   QFont( "Coolvetica", 20, QFont::Bold, false ) );
+
+
+    QMenu menu( this );
+    QAction *act_cancel = menu.addAction( "Cancel" );
+    act_cancel->setShortcut( Qt::Key_F7 );
+    act_cancel->setFont( menu_font );
+    menu.setActiveAction( act_cancel );
+
+//TODO: icons
+
+
+    QAction *act_last = menu.addAction( "List last play locations" );
+    act_last->setShortcut( Qt::Key_F8 );
+    act_last->setFont( menu_font );
+
+    QAction *res = menu.exec( mapToGlobal( poster->pos() ) );
+
+    
+}
+
 /*****************************************************************************/
 
 void NWMainWindow::keyPressEvent ( QKeyEvent * e )
@@ -931,6 +955,7 @@ void NWMainWindow::setupMenuBar()
 
     action = menu->addAction( tr("Go to &Random item"),   this, SLOT(slotRandomItem()), Qt::Key_Asterisk );
     action = menu->addAction( tr("Activate current item"),  this, SLOT(enterCurrent()), Qt::Key_Right );
+    action = menu->addAction( tr("Keypad Menu"),  this, SLOT(slotKeypadMenu()), Qt::Key_Insert );
 
     /*--------------------------------------------------------------------*/
 
