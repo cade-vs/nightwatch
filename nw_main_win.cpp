@@ -747,10 +747,10 @@ void NWMainWindow::slotKeypadMenu()
 {
     QFont menu_font(   QFont( "Coolvetica", 20, QFont::Bold, false ) );
 
-
     QMenu menu( this );
+
     QAction *act_cancel = menu.addAction( "Cancel" );
-    act_cancel->setShortcut( Qt::Key_F7 );
+    act_cancel->setShortcut( Qt::Key_Insert );
     act_cancel->setFont( menu_font );
     menu.setActiveAction( act_cancel );
 
