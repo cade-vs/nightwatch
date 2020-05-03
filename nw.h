@@ -30,6 +30,7 @@ extern QString movies_extensions_filter;
 extern QString images_extensions_filter;
 
 extern QSettings Settings;
+extern QSettings LastPlayed;
 
 extern int opt_thumbs_size;
 extern int opt_create_thumbs;

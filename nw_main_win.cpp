@@ -208,17 +208,10 @@ NWMainWindow::NWMainWindow()
 
     tree->setSelectionMode( QAbstractItemView::ExtendedSelection );
 
-//    setCentralWidget( tree );
-
     setupMenuBar();
-
-    //statusBar()->showMessage( "." );
-
-    //loadDir( QString( "." ) );
     
     QWidget *central_widget = new QWidget;
     QHBoxLayout *layout = new QHBoxLayout( central_widget );
-//    QGridLayout *layout = new QGridLayout( this );
 
 
     layout->addWidget( poster, 1 );
@@ -226,15 +219,8 @@ NWMainWindow::NWMainWindow()
 
     layout->setStretchFactor( poster, 1 );
     layout->setStretchFactor( tree,   2 );
-    //layout->addStretch();
-    //layout->addWidget( poster, 0, 0 );
-    //layout->addWidget( tree,   0, 1 );
-    
-    //layout->setStretch( 0, 10 );
-    //layout->setStretch( 1, 20 );
     
     layout->setSpacing( 0 );
- 
     
     setCentralWidget( central_widget );
 
@@ -255,7 +241,7 @@ NWMainWindow::~NWMainWindow()
 
 /*****************************************************************************/
 
-void NWMainWindow::loadDir( QString path )
+void NWMainWindow::loadDir( QString path, int mode )
 {
   QString last_path = cdir.absolutePath();
 
@@ -264,9 +250,6 @@ void NWMainWindow::loadDir( QString path )
   QString new_path = cdir.absolutePath();
 
   setWindowTitle( QString() + " NightWatch " + NW_VERSION + ": " + new_path );
-
-  QString save_item_name;
-  if( tree->topLevelItemCount() > 0 ) save_item_name = tree->currentItem()->text( 1 );
 
   QStringList filters;
   filters.append( QString( "*" ) );
@@ -281,7 +264,12 @@ void NWMainWindow::loadDir( QString path )
   QIcon icon_video(  ":/images/video-x-generic.png" );
   QIcon icon_folder( ":/images/folder.png" );
 
+  QString save_item_name;
+  if( mode == 0 && tree->topLevelItemCount() > 0 ) save_item_name = tree->currentItem()->text( 1 );
+
   tree->clear();
+  
+  int movies_found = 0;
   for( int i = 0; i < info_list.count(); i++ )
     {
     QFileInfo fi = info_list.at( i );
@@ -308,11 +296,10 @@ void NWMainWindow::loadDir( QString path )
       {
       item->is_dir = 0;
       item->setIcon( 0, icon_video  );
+      movies_found++;
       }
 
     item->fn = file_name;
-
-    if( last_path == new_path + "/" + file_name ) current = item;
 
     file_name.replace( QRegularExpression( "[_.]" ), " " );
     file_name.replace( QRegularExpression( "^THE (.+)", QRegularExpression::CaseInsensitiveOption ), "\\1 [The *]" );
@@ -328,16 +315,25 @@ void NWMainWindow::loadDir( QString path )
     item->setFont( 3, font_small );
 
     tree->addTopLevelItem( item );
+
+    if( LastPlayed.value( new_path ) == item->fn ) last_played = item;
+
+    if( mode == 0 && save_item_name == file_name              ) current     = item;
+    if( mode == 2 && last_path   == new_path + "/" + item->fn ) current     = item;
+    }
+    
+  if( movies_found > 1 && last_played )  
+    {
+    QIcon lp_icon( ":/images/last-played.png" );
+    last_played->setIcon( 1, lp_icon );
+    if( mode == 1 ) current = last_played;
     }
 
+  tree->setCurrentItem( tree->topLevelItem( 0 ) );
   if( current )
     tree->setCurrentItem( current );
-  else
-    {
-    tree->setCurrentItem( tree->topLevelItem( 0 ) );
-    if( save_item_name != "" )
-      tree->findNext( save_item_name );
-    }
+
+  qDebug() << "load dir mode = " << mode;
 
   statusBar()->showMessage( QString( tr( "Loaded items" ) ) + ": " + QVariant( tree->topLevelItemCount() ).toString() );
 
@@ -502,7 +498,7 @@ void NWMainWindow::goToDir( int mode )
                               cdir.absolutePath(),
                               options );
   if ( ! new_dir.isEmpty() )
-      loadDir( new_dir );
+      loadDir( new_dir, 1 );
 };
 
 /*****************************************************************************/
@@ -515,11 +511,18 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
 
   if( nw_item->is_dir )
     {
-    loadDir( nw_item->fn );
+    loadDir( nw_item->fn, 1 );
     }
   else
     {
-    QStringList exec_args = { cdir.absolutePath() + "/" + nw_item->fn };
+    QString ndir = cdir.absolutePath();
+    LastPlayed.setValue( ndir, nw_item->fn );
+    QIcon lp_icon( ":/images/last-played.png" );
+    nw_item->setIcon( 1, lp_icon );
+    if( last_played ) last_played->setIcon( 1, QIcon() );
+    last_played = nw_item;
+
+    QStringList exec_args = { ndir + "/" + nw_item->fn };
     QProcess mpl;
     mpl.execute( "nw-movie-player", exec_args );
     mpl.waitForFinished();
@@ -603,14 +606,14 @@ void NWMainWindow::slotNewWindow()
 {
   NWMainWindow *new_mainwin = new NWMainWindow();
   new_mainwin->show();
-  new_mainwin->loadDir( cdir.absolutePath() );
+  new_mainwin->loadDir( cdir.absolutePath(), 1 );
 };
 
 /*****************************************************************************/
 
 void NWMainWindow::slotGoUp()
 {
-  loadDir( ".." );
+  loadDir( "..", 2 );
 };
 
 /*****************************************************************************/
@@ -662,18 +665,18 @@ void NWMainWindow::slotChangeDir()
 
 void NWMainWindow::slotHomeDir()
 {
-  loadDir( cdir.homePath() );
+  loadDir( cdir.homePath(), 1 );
 }
 
 void NWMainWindow::slotReloadDir()
 {
-  loadDir( cdir.absolutePath() );
+  loadDir( cdir.absolutePath(), 0 );
 }
 
 void NWMainWindow::slotShowDirsOnly()
 {
   opt_dirs_only = ! opt_dirs_only;
-  loadDir( cdir.absolutePath() );
+  loadDir( cdir.absolutePath(), 1 );
 
   statusBar()->showMessage( opt_dirs_only ? tr( "Show directories only" ) : tr( "Show all directories and files" ) );
 }

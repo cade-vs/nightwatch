@@ -71,7 +71,6 @@ class NWMainWindow : public QMainWindow
 
  public:
 
-
      NWTreeWidget   *tree;
      NWPoster       *poster;
      QTimer         *timer;
@@ -83,13 +82,15 @@ class NWMainWindow : public QMainWindow
 
      int             opt_thumbs;
      int             opt_dirs_only;
+     
+     NWTreeWidgetItem *last_played;
 
      NWMainWindow();
      ~NWMainWindow();
 
      void closeAllViews();
 
-     void loadDir( QString path );
+     void loadDir( QString path, int mode ); // modes: 0 reload, 1 enter new, 2 go up
      void goToDir( int mode );
 
      void loadThumbs();

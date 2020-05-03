@@ -21,6 +21,7 @@ QString movies_extensions_filter;
 QString images_extensions_filter;
 
 QSettings Settings( "CSA", "NW4" );
+QSettings LastPlayed( "CSA", "NW4_LP" );
 
 int opt_thumbs_size;
 int opt_create_thumbs;
@@ -60,7 +61,7 @@ int main(int argc, char **argv)
   if( args.count() > 0 ) target_dir = args[0];
   
   NWMainWindow *main_win = new NWMainWindow();
-  main_win->loadDir( target_dir );
+  main_win->loadDir( target_dir, 1 );
   main_win->show();
 
   return app.exec();
