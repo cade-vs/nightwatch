@@ -746,7 +746,7 @@ void NWMainWindow::slotAbout()
 void NWMainWindow::slotKeypadMenu()
 {
     QFont menu_font(   QFont( "Coolvetica", 20, QFont::Bold, false ) );
-
+/*
     QMenu menu( this );
 
     QAction *act_cancel = menu.addAction( "Cancel" );
@@ -762,7 +762,7 @@ void NWMainWindow::slotKeypadMenu()
     act_last->setFont( menu_font );
 
     QAction *res = menu.exec( mapToGlobal( poster->pos() ) );
-
+*/
     
 }
 
