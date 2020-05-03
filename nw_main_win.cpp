@@ -128,6 +128,7 @@ void NWTreeWidget::findNextThe( QString str )
 
 void NWTreeWidget::keyPressEvent ( QKeyEvent * e )
 {
+  main_window->cancelAutoPlay();
 
   e->ignore();
   int a = e->text() == "" ? 0 : e->text().toLatin1().at(0);
@@ -152,7 +153,6 @@ NWMainWindow::NWMainWindow()
 {
     rand_seeded = 0;
 
-    opt_thumbs        = 0;
     opt_dirs_only     = 0;
 
     last_sort_col = 1;
@@ -180,6 +180,7 @@ NWMainWindow::NWMainWindow()
     //poster->resize( 300, 400 );
 
     tree = new NWTreeWidget();
+    tree->main_window = this;
     //tree->setSizePolicy( QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding ) );
     //tree->setMinimumSize( 600, 400 );
     //tree->resize( 600, 400 );
@@ -227,9 +228,15 @@ NWMainWindow::NWMainWindow()
 
     poster->loadImage( QString( ":/images/journey_by_t1na.jpg" ) );
 
+    QFont status_bar_font(   QFont( "Coolvetica", 18, QFont::Bold, false ) );
+    statusBar()->setFont( status_bar_font );
+
+
     timer = new QTimer( this );
+    auto_play_timer = new QTimer( this );
 
     connect( timer, SIGNAL(timeout()), this, SLOT(slotLoadCurrentImage()));
+    connect( auto_play_timer, SIGNAL(timeout()), this, SLOT(slotAutoPlayNext()));
     connect( tree,  SIGNAL(itemActivated(QTreeWidgetItem *, int)), this, SLOT(slotItemActivated(QTreeWidgetItem *, int)));
     connect( tree,  SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), this, SLOT(slotCurrentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)));
 }
@@ -238,6 +245,8 @@ NWMainWindow::~NWMainWindow()
 {
   delete poster;
   delete tree;
+  delete timer;
+  delete auto_play_timer;
 }
 
 /*****************************************************************************/
@@ -271,7 +280,7 @@ void NWMainWindow::loadDir( QString path, int mode )
 
   tree->clear();
   
-  int movies_found = 0;
+  movies_count = 0;
   for( int i = 0; i < info_list.count(); i++ )
     {
     QFileInfo fi = info_list.at( i );
@@ -298,7 +307,7 @@ void NWMainWindow::loadDir( QString path, int mode )
       {
       item->is_dir = 0;
       item->setIcon( 0, icon_video  );
-      movies_found++;
+      movies_count++;
       }
 
     item->fn = file_name;
@@ -324,7 +333,7 @@ void NWMainWindow::loadDir( QString path, int mode )
     if( mode == 2 && last_path   == new_path + "/" + item->fn ) current     = item;
     }
     
-  if( movies_found > 1 && last_played )  
+  if( movies_count > 1 && last_played )  
     {
     QIcon lp_icon( ":/images/last-played.png" );
     last_played->setIcon( 1, lp_icon );
@@ -339,9 +348,6 @@ void NWMainWindow::loadDir( QString path, int mode )
 
   statusBar()->showMessage( QString( tr( "Loaded items" ) ) + ": " + QVariant( tree->topLevelItemCount() ).toString() );
 
-  if( opt_thumbs )
-    loadThumbs();
-    
   tree->resizeColumnToContents( 0 );
   tree->resizeColumnToContents( 1 );
   tree->resizeColumnToContents( 2 );
@@ -373,117 +379,6 @@ void NWPoster::paintEvent( QPaintEvent * e )
   
   painter.drawImage( ox, oy, im );
 };
-
-/*****************************************************************************/
-
-void NWMainWindow::loadThumbs()
-{
-  QProgressDialog pd( tr( "Loading thumbnails..." ), tr( "Cancel" ), 0, tree->topLevelItemCount() - 1 );
-  pd.move( x() + ( ( width() - pd.width() ) / 2 ), y() + ( ( height() - pd.height() ) / 2) );
-
-  QString new_path = cdir.absolutePath();
-
-  for( int i = 0; i < tree->topLevelItemCount(); i++ )
-    {
-    pd.setValue( i );
-    if ( pd.wasCanceled() )
-      break;
-    QApplication::processEvents();
-
-    if( i >= tree->topLevelItemCount() ) return;
-
-    NWTreeWidgetItem *item = (NWTreeWidgetItem*)tree->topLevelItem( i );
-
-    //qDebug() << tree->topLevelItemCount() << " | " << i << " | " << item;
-
-    QString item_name = item->fn;
-    QString item_name_src;
-
-    if( item->is_dir )
-      {
-      if( ! opt_show_dir_thumbs ) continue;
-
-      //new_path = cdir.absolutePath() + "/" + item_name;
-
-      QDir tdir;
-      tdir.cd( new_path + "/" + item_name );
-
-      QStringList filters;
-      filters.append( QString( "*" ) );
-
-      QFileInfoList info_list = tdir.entryInfoList( filters );
-
-      for( int i = 0; i < info_list.count(); i++ )
-        {
-        QFileInfo fi = info_list.at( i );
-
-        if( fi.fileName() == "."  ) continue;
-        if( fi.fileName() == ".." ) continue;
-
-        QString ext = "." + fi.suffix() + ".";
-        if( ! fi.isDir() && images_extensions_filter.indexOf( ext.toUpper() ) < 0 ) continue;
-
-        item_name_src = item_name + "/" + fi.fileName();
-        break;
-        }
-
-      //qDebug() << "Show dir thumbs: " << new_path << " | " << item_name;
-      }
-    else
-      {
-      item_name_src = item_name;
-      item_name_src.replace( QRegularExpression( "\\.[^.]+$" ), ".jpg" ); // TODO: find optional ext, jpg, jpeg, png, etc.
-      }  
- 
-    QStringList icon_fns;
-    icon_fns.append( new_path + "/.thumbnails/" + item_name + ".jpg" ); // JPEG thumb idex is 0!
-    icon_fns.append( new_path + "/.thumbnails/" + item_name + ".png" ); // PNG  thumb idex is 1!
-
-    int found = -1;
-    for( int z = 0; z < icon_fns.count(); z++ )
-      {
-      if( QFile::exists( icon_fns[z] ) )
-        {
-        found = z;
-        break;
-        }
-      }
-
-    if( found == -1 && opt_create_thumbs )
-      {
-      QString icon_dir = new_path + "/.thumbnails";
-      if( opt_create_thumbs )
-        {
-        if( ! cdir.exists( icon_dir ) )
-          cdir.mkdir( icon_dir );
-        }
-
-      QString file_name = new_path + "/" + item_name_src;
-      QImage im;
-      im.load( file_name );
-      if( im.width() > opt_thumbs_size || im.height() > opt_thumbs_size )
-        im = im.scaled( QSize( opt_thumbs_size, opt_thumbs_size ) , Qt::KeepAspectRatio, opt_create_smooth_thumbs ? Qt::SmoothTransformation : Qt::FastTransformation );
-      int thumb_format_index = 1; // use PNG index!
-      if( opt_create_jpeg_thumbs )
-        {
-        QFileInfo fi( file_name );
-        QString ext = fi.suffix().toLower();
-        if( ext == "jpg" || ext == "jpeg" )
-          thumb_format_index = 0; // use JPEG index! but only for jpeg files
-        }
-      im.save( icon_fns[ thumb_format_index ] );
-      found = thumb_format_index;
-      }
-
-    if( found > -1 )
-      {
-      QIcon icon( icon_fns[ found ] );
-      if( ! icon.isNull() ) item->setIcon( 1, icon );
-      }
-
-    } // for tree
-
-}
 
 /*****************************************************************************/
 
@@ -528,6 +423,21 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
     QProcess mpl;
     mpl.execute( "nw-movie-player", exec_args );
     mpl.waitForFinished();
+    
+    if( auto_play > 0 )
+      {
+      auto_play--;
+      if( auto_play < 1 )
+        {
+        auto_play_timer->stop();
+        statusBar()->showMessage( "Auto-Play ended." );
+        }
+      else
+        {  
+        auto_play_timer->start( 4000 );
+        statusBar()->showMessage( "*** Auto-Play is active. Press any navigation key to cancel ***" );
+        }
+      }
     }
 };
 
@@ -620,46 +530,6 @@ void NWMainWindow::slotGoUp()
 
 /*****************************************************************************/
 
-void NWMainWindow::slotThumbs()
-{
-  opt_thumbs = ! opt_thumbs;
-  if( opt_thumbs ) loadThumbs();
-
-  statusBar()->showMessage( opt_thumbs ? tr( "Thumbnails enabled" ) : tr( "Thumbnails disabled" ) );
-};
-
-void NWMainWindow::slotCreateThumbs()
-{
-  opt_create_thumbs = ! opt_create_thumbs;
-  Settings.setValue( "create_thumbs", opt_create_thumbs );
-
-  statusBar()->showMessage( opt_create_thumbs ? tr( "Thumbnails creation enabled" ) : tr( "Thumbnails creation disabled" ) );
-};
-
-void NWMainWindow::slotJPEGThumbs()
-{
-  opt_create_jpeg_thumbs = ! opt_create_jpeg_thumbs;
-  Settings.setValue( "create_jpeg_thumbs", opt_create_jpeg_thumbs );
-
-  statusBar()->showMessage( opt_create_jpeg_thumbs ? tr( "JPEG Thumbnails creation for JPEGs enabled" ) : tr( "PNG Thumbnails creation for all image types enabled" ) );
-};
-
-void NWMainWindow::slotDirThumbs()
-{
-  opt_show_dir_thumbs = ! opt_show_dir_thumbs;
-  Settings.setValue( "opt_show_dir_thumbs", opt_show_dir_thumbs );
-
-  statusBar()->showMessage( opt_show_dir_thumbs ? tr( "Directory thumbnails enabled" ) : tr( "Directory thumbnails disabled" ) );
-}
-
-void NWMainWindow::slotSmoothThumbs()
-{
-  opt_create_smooth_thumbs = ! opt_create_smooth_thumbs;
-  Settings.setValue( "create_smooth_thumbs", opt_create_smooth_thumbs );
-
-  statusBar()->showMessage( opt_create_smooth_thumbs ? tr( "Smooth Thumbnails creation enabled" ) : tr( "Fast Thumbnails creation enabled" ) );
-};
-
 void NWMainWindow::slotChangeDir()
 {
   goToDir( 0 );
@@ -744,11 +614,69 @@ void NWMainWindow::slotAbout()
   poster->loadImage( ":/images/journey_by_t1na.jpg" );
 };
 
+void NWMainWindow::selectLastPlayLocation()
+{
+    QFont menu_font(   QFont( "Coolvetica", 20, QFont::Bold, false ) );
+    QMenu menu( "Select last play location", this );
+
+    QAction *act_cancel = menu.addAction( "Cancel" );
+    act_cancel->setShortcut( Qt::Key_Insert );
+    act_cancel->setFont( menu_font );
+    menu.setActiveAction( act_cancel );
+    
+    for( int i = 0; i < 16; i++ )
+      {
+      QAction *act = menu.addAction( QString() + "Menu location " );
+      act->setFont( menu_font );
+      }
+
+    QAction *res = menu.exec( mapToGlobal( poster->pos() ) );
+    
+};
+
+void NWMainWindow::slotAutoPlayNext()
+{
+  NWTreeWidgetItem *current = (NWTreeWidgetItem *)tree->currentItem();
+  NWTreeWidgetItem *next    = current;
+  while(4)
+    {
+    next = (NWTreeWidgetItem *)tree->itemBelow( next );
+    if( ! next )
+      return cancelAutoPlay();
+    if( ! next->is_dir )
+      break;
+    }
+  tree->setCurrentItem( next );
+  tree->scrollToItem( next );
+  auto_play_timer->stop();
+  qDebug() << "+++";
+  if( auto_play < 1 ) return;
+  enterCurrent();
+};
+
+void NWMainWindow::beginAutoPlay()
+{
+  if( movies_count < 1 )
+    {
+    statusBar()->showMessage( "WARNING: Cannot start Auto-Play, need at least 1 movie." );
+    return;
+    }
+  auto_play = 4;
+  enterCurrent();
+}
+
+void NWMainWindow::cancelAutoPlay()
+{
+  if( auto_play < 1 ) return;
+  auto_play = 0;
+  auto_play_timer->stop();
+  statusBar()->showMessage( "Auto-Play ended or cancelled." );
+}
+
 void NWMainWindow::slotKeypadMenu()
 {
     QFont menu_font(   QFont( "Coolvetica", 20, QFont::Bold, false ) );
-/*
-    QMenu menu( this );
+    QMenu menu( "MENU", this );
 
     QAction *act_cancel = menu.addAction( "Cancel" );
     act_cancel->setShortcut( Qt::Key_Insert );
@@ -757,20 +685,23 @@ void NWMainWindow::slotKeypadMenu()
 
 //TODO: icons
 
-
     QAction *act_last = menu.addAction( "List last play locations" );
-    act_last->setShortcut( Qt::Key_F8 );
     act_last->setFont( menu_font );
 
+    QAction *auto_play = menu.addAction( "Auto-Play" );
+    auto_play->setFont( menu_font );
+
     QAction *res = menu.exec( mapToGlobal( poster->pos() ) );
-*/
-    
-}
+
+    if( res == act_last  ) return selectLastPlayLocation();
+    if( res == auto_play ) return beginAutoPlay();
+};
 
 /*****************************************************************************/
 
 void NWMainWindow::keyPressEvent ( QKeyEvent * e )
 {
+  cancelAutoPlay();
 
   e->accept();
   if( e->modifiers() & Qt::CTRL )
@@ -921,12 +852,6 @@ void NWMainWindow::setupMenuBar()
 
     menu = menuBar()->addMenu( tr("&View"));
 
-    action = menu->addAction( tr("Enable &thumbnails") );
-    action->setCheckable( true );
-    action->setChecked( opt_thumbs );
-    action->setShortcut( Qt::Key_F6 );
-    connect( action, SIGNAL( toggled(bool) ), this, SLOT(slotThumbs()) );
-
     action = menu->addAction( tr("Show d&irectories only") );
     action->setCheckable( true );
     action->setChecked( opt_dirs_only );
@@ -970,26 +895,6 @@ void NWMainWindow::setupMenuBar()
     /*--------------------------------------------------------------------*/
 
     menu = menuBar()->addMenu( tr("&Settings"));
-
-    action = menu->addAction( tr("Create thumbnails if needed") );
-    action->setCheckable( true );
-    action->setChecked( opt_create_thumbs );
-    connect( action, SIGNAL( toggled(bool) ), this, SLOT(slotCreateThumbs()) );
-
-    action = menu->addAction( tr("Create smooth thumbnails") );
-    action->setCheckable( true );
-    action->setChecked( opt_create_smooth_thumbs );
-    connect( action, SIGNAL( toggled(bool) ), this, SLOT(slotSmoothThumbs()) );
-
-    action = menu->addAction( tr("Create new thumbnails in JPEG for JPEGs") );
-    action->setCheckable( true );
-    action->setChecked( opt_create_jpeg_thumbs );
-    connect( action, SIGNAL( toggled(bool) ), this, SLOT(slotJPEGThumbs()) );
-
-    action = menu->addAction( tr("Show directory thumbnails") );
-    action->setCheckable( true );
-    action->setChecked( opt_show_dir_thumbs );
-    connect( action, SIGNAL( toggled(bool) ), this, SLOT(slotDirThumbs()) );
 
     menu->addSeparator();
 

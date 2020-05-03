@@ -155,8 +155,8 @@ int NWTreeWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     return _id;
 }
 struct qt_meta_stringdata_NWMainWindow_t {
-    QByteArrayData data[34];
-    char stringdata0[448];
+    QByteArrayData data[30];
+    char stringdata0[391];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -182,23 +182,19 @@ QT_MOC_LITERAL(13, 152, 22), // "slotCurrentItemChanged"
 QT_MOC_LITERAL(14, 175, 7), // "current"
 QT_MOC_LITERAL(15, 183, 8), // "previous"
 QT_MOC_LITERAL(16, 192, 20), // "slotLoadCurrentImage"
-QT_MOC_LITERAL(17, 213, 13), // "slotNewWindow"
-QT_MOC_LITERAL(18, 227, 8), // "slotGoUp"
-QT_MOC_LITERAL(19, 236, 10), // "slotThumbs"
-QT_MOC_LITERAL(20, 247, 16), // "slotCreateThumbs"
-QT_MOC_LITERAL(21, 264, 14), // "slotJPEGThumbs"
-QT_MOC_LITERAL(22, 279, 16), // "slotSmoothThumbs"
-QT_MOC_LITERAL(23, 296, 13), // "slotDirThumbs"
-QT_MOC_LITERAL(24, 310, 13), // "slotChangeDir"
-QT_MOC_LITERAL(25, 324, 11), // "slotHomeDir"
-QT_MOC_LITERAL(26, 336, 13), // "slotReloadDir"
-QT_MOC_LITERAL(27, 350, 16), // "slotShowDirsOnly"
-QT_MOC_LITERAL(28, 367, 15), // "slotSortColumn1"
-QT_MOC_LITERAL(29, 383, 15), // "slotSortColumn3"
-QT_MOC_LITERAL(30, 399, 14), // "slotRandomItem"
-QT_MOC_LITERAL(31, 414, 14), // "slotKeypadMenu"
-QT_MOC_LITERAL(32, 429, 8), // "slotHelp"
-QT_MOC_LITERAL(33, 438, 9) // "slotAbout"
+QT_MOC_LITERAL(17, 213, 16), // "slotAutoPlayNext"
+QT_MOC_LITERAL(18, 230, 13), // "slotNewWindow"
+QT_MOC_LITERAL(19, 244, 8), // "slotGoUp"
+QT_MOC_LITERAL(20, 253, 13), // "slotChangeDir"
+QT_MOC_LITERAL(21, 267, 11), // "slotHomeDir"
+QT_MOC_LITERAL(22, 279, 13), // "slotReloadDir"
+QT_MOC_LITERAL(23, 293, 16), // "slotShowDirsOnly"
+QT_MOC_LITERAL(24, 310, 15), // "slotSortColumn1"
+QT_MOC_LITERAL(25, 326, 15), // "slotSortColumn3"
+QT_MOC_LITERAL(26, 342, 14), // "slotRandomItem"
+QT_MOC_LITERAL(27, 357, 14), // "slotKeypadMenu"
+QT_MOC_LITERAL(28, 372, 8), // "slotHelp"
+QT_MOC_LITERAL(29, 381, 9) // "slotAbout"
 
     },
     "NWMainWindow\0toggleSortColumns\0\0enter\0"
@@ -207,9 +203,7 @@ QT_MOC_LITERAL(33, 438, 9) // "slotAbout"
     "switchLayoutDirection\0slotItemActivated\0"
     "column\0slotCurrentItemChanged\0current\0"
     "previous\0slotLoadCurrentImage\0"
-    "slotNewWindow\0slotGoUp\0slotThumbs\0"
-    "slotCreateThumbs\0slotJPEGThumbs\0"
-    "slotSmoothThumbs\0slotDirThumbs\0"
+    "slotAutoPlayNext\0slotNewWindow\0slotGoUp\0"
     "slotChangeDir\0slotHomeDir\0slotReloadDir\0"
     "slotShowDirsOnly\0slotSortColumn1\0"
     "slotSortColumn3\0slotRandomItem\0"
@@ -223,7 +217,7 @@ static const uint qt_meta_data_NWMainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      25,   14, // methods
+      21,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -231,31 +225,27 @@ static const uint qt_meta_data_NWMainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  139,    2, 0x0a /* Public */,
-       3,    1,  140,    2, 0x0a /* Public */,
-       6,    0,  143,    2, 0x0a /* Public */,
-       7,    1,  144,    2, 0x0a /* Public */,
-      10,    0,  147,    2, 0x0a /* Public */,
-      11,    2,  148,    2, 0x0a /* Public */,
-      13,    2,  153,    2, 0x0a /* Public */,
-      16,    0,  158,    2, 0x0a /* Public */,
-      17,    0,  159,    2, 0x0a /* Public */,
-      18,    0,  160,    2, 0x0a /* Public */,
-      19,    0,  161,    2, 0x0a /* Public */,
-      20,    0,  162,    2, 0x0a /* Public */,
-      21,    0,  163,    2, 0x0a /* Public */,
-      22,    0,  164,    2, 0x0a /* Public */,
-      23,    0,  165,    2, 0x0a /* Public */,
-      24,    0,  166,    2, 0x0a /* Public */,
-      25,    0,  167,    2, 0x0a /* Public */,
-      26,    0,  168,    2, 0x0a /* Public */,
-      27,    0,  169,    2, 0x0a /* Public */,
-      28,    0,  170,    2, 0x0a /* Public */,
-      29,    0,  171,    2, 0x0a /* Public */,
-      30,    0,  172,    2, 0x0a /* Public */,
-      31,    0,  173,    2, 0x0a /* Public */,
-      32,    0,  174,    2, 0x0a /* Public */,
-      33,    0,  175,    2, 0x0a /* Public */,
+       1,    0,  119,    2, 0x0a /* Public */,
+       3,    1,  120,    2, 0x0a /* Public */,
+       6,    0,  123,    2, 0x0a /* Public */,
+       7,    1,  124,    2, 0x0a /* Public */,
+      10,    0,  127,    2, 0x0a /* Public */,
+      11,    2,  128,    2, 0x0a /* Public */,
+      13,    2,  133,    2, 0x0a /* Public */,
+      16,    0,  138,    2, 0x0a /* Public */,
+      17,    0,  139,    2, 0x0a /* Public */,
+      18,    0,  140,    2, 0x0a /* Public */,
+      19,    0,  141,    2, 0x0a /* Public */,
+      20,    0,  142,    2, 0x0a /* Public */,
+      21,    0,  143,    2, 0x0a /* Public */,
+      22,    0,  144,    2, 0x0a /* Public */,
+      23,    0,  145,    2, 0x0a /* Public */,
+      24,    0,  146,    2, 0x0a /* Public */,
+      25,    0,  147,    2, 0x0a /* Public */,
+      26,    0,  148,    2, 0x0a /* Public */,
+      27,    0,  149,    2, 0x0a /* Public */,
+      28,    0,  150,    2, 0x0a /* Public */,
+      29,    0,  151,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -265,10 +255,6 @@ static const uint qt_meta_data_NWMainWindow[] = {
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 4, QMetaType::Int,    5,   12,
     QMetaType::Void, 0x80000000 | 4, 0x80000000 | 4,   14,   15,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -301,23 +287,19 @@ void NWMainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 5: _t->slotItemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         case 6: _t->slotCurrentItemChanged((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< QTreeWidgetItem*(*)>(_a[2]))); break;
         case 7: _t->slotLoadCurrentImage(); break;
-        case 8: _t->slotNewWindow(); break;
-        case 9: _t->slotGoUp(); break;
-        case 10: _t->slotThumbs(); break;
-        case 11: _t->slotCreateThumbs(); break;
-        case 12: _t->slotJPEGThumbs(); break;
-        case 13: _t->slotSmoothThumbs(); break;
-        case 14: _t->slotDirThumbs(); break;
-        case 15: _t->slotChangeDir(); break;
-        case 16: _t->slotHomeDir(); break;
-        case 17: _t->slotReloadDir(); break;
-        case 18: _t->slotShowDirsOnly(); break;
-        case 19: _t->slotSortColumn1(); break;
-        case 20: _t->slotSortColumn3(); break;
-        case 21: _t->slotRandomItem(); break;
-        case 22: _t->slotKeypadMenu(); break;
-        case 23: _t->slotHelp(); break;
-        case 24: _t->slotAbout(); break;
+        case 8: _t->slotAutoPlayNext(); break;
+        case 9: _t->slotNewWindow(); break;
+        case 10: _t->slotGoUp(); break;
+        case 11: _t->slotChangeDir(); break;
+        case 12: _t->slotHomeDir(); break;
+        case 13: _t->slotReloadDir(); break;
+        case 14: _t->slotShowDirsOnly(); break;
+        case 15: _t->slotSortColumn1(); break;
+        case 16: _t->slotSortColumn3(); break;
+        case 17: _t->slotRandomItem(); break;
+        case 18: _t->slotKeypadMenu(); break;
+        case 19: _t->slotHelp(); break;
+        case 20: _t->slotAbout(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -359,13 +341,13 @@ int NWMainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 25)
+        if (_id < 21)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 25;
+        _id -= 21;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 25)
+        if (_id < 21)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 25;
+        _id -= 21;
     }
     return _id;
 }

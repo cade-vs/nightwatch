@@ -21,6 +21,8 @@
 #include <QImage>
 #include <QTimer>
 
+class NWMainWindow;
+
 class NWTreeWidgetItem : public QTreeWidgetItem
 {
 
@@ -52,6 +54,8 @@ class NWTreeWidget : public QTreeWidget
      Q_OBJECT
 
  public:
+     NWMainWindow *main_window;
+
      NWTreeWidget();
      NWTreeWidget( QWidget *parent );
 
@@ -76,12 +80,15 @@ class NWMainWindow : public QMainWindow
      QTimer         *timer;
 
      QDir            cdir;
+     int             movies_count;
 
      int             last_sort_col;
      Qt::SortOrder   last_sort_ord;
 
-     int             opt_thumbs;
      int             opt_dirs_only;
+
+     int             auto_play;
+     QTimer         *auto_play_timer;
      
      NWTreeWidgetItem *last_played;
 
@@ -93,14 +100,16 @@ class NWMainWindow : public QMainWindow
      void loadDir( QString path, int mode ); // modes: 0 reload, 1 enter new, 2 go up
      void goToDir( int mode );
 
-     void loadThumbs();
-
      void goPrevNext( int r, int skip_dirs = 1 );
      void goPrevNextDir( int r );
 
      void sortColumn( int n );
 
      int deleteItems( int current_only );
+
+     void selectLastPlayLocation();
+     void beginAutoPlay();
+     void cancelAutoPlay();
 
  protected:
      void showEvent(QShowEvent *event);
@@ -120,13 +129,10 @@ class NWMainWindow : public QMainWindow
      void slotCurrentItemChanged( QTreeWidgetItem *current, QTreeWidgetItem *previous );
      void slotLoadCurrentImage();
 
+     void slotAutoPlayNext();
+
      void slotNewWindow();
      void slotGoUp();
-     void slotThumbs();
-     void slotCreateThumbs();
-     void slotJPEGThumbs();
-     void slotSmoothThumbs();
-     void slotDirThumbs();
 
      void slotChangeDir();
      void slotHomeDir();
