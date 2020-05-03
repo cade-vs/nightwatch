@@ -258,6 +258,7 @@ void NWMainWindow::loadDir( QString path, int mode )
   QFileInfoList info_list = cdir.entryInfoList( filters );
 
   NWTreeWidgetItem *current = NULL;
+  last_played = NULL;
 
   QFont font_big(   QFont( "Coolvetica", 24, QFont::Bold, false ) );
   QFont font_small( QFont( "Coolvetica", 12, QFont::Bold, false ) );
@@ -317,7 +318,7 @@ void NWMainWindow::loadDir( QString path, int mode )
 
     tree->addTopLevelItem( item );
 
-    if( LastPlayed.value( new_path ) == item->fn ) last_played = item;
+    if( ! last_played && LastPlayed.value( new_path ) == item->fn ) last_played = item;
 
     if( mode == 0 && save_item_name == file_name              ) current     = item;
     if( mode == 2 && last_path   == new_path + "/" + item->fn ) current     = item;
