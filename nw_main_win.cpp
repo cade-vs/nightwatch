@@ -153,6 +153,7 @@ NWMainWindow::NWMainWindow()
     : QMainWindow()
 {
     rand_seeded = 0;
+    first_load  = 0;
 
     last_sort_col = 1;
     last_sort_ord = Qt::AscendingOrder;
@@ -225,14 +226,12 @@ NWMainWindow::NWMainWindow()
     
     setCentralWidget( central_widget );
 
-    poster->loadImage( QString( ":/images/journey_by_t1na.jpg" ) );
-
     QFont status_bar_font(   QFont( "Coolvetica", 18, QFont::Bold, false ) );
     statusBar()->setFont( status_bar_font );
 
     timer = new QTimer( this );
     auto_play_timer = new QTimer( this );
-
+    
     connect( timer, SIGNAL(timeout()), this, SLOT(slotLoadCurrentImage()));
     connect( auto_play_timer, SIGNAL(timeout()), this, SLOT(slotAutoPlayNext()));
     connect( tree,  SIGNAL(itemActivated(QTreeWidgetItem *, int)), this, SLOT(slotItemActivated(QTreeWidgetItem *, int)));
@@ -345,6 +344,9 @@ void NWMainWindow::loadDir( QString path, int mode )
   tree->resizeColumnToContents( 1 );
   tree->resizeColumnToContents( 2 );
   tree->resizeColumnToContents( 3 );
+
+  show();
+  poster->loadImage( QString( ":/images/journey_by_t1na.jpg" ) );
 };
 
 /*****************************************************************************/
@@ -357,8 +359,11 @@ void NWPoster::loadImage( const QString file_name )
 
 void NWPoster::rescaleImage()
 {
-  if( ! im.load( fn ) ) im.load( QString( ":/images/journey_by_t1na.jpg" ) );
-  im = im.scaled( QSize( width(), height() ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
+  if( fn == "" || ! im.load( fn ) ) im.load( QString( ":/images/journey_by_t1na.jpg" ) );
+//  im = im.scaled( QSize( width(), height() ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
+qDebug() << im.size();  
+  im = im.scaled( size(), Qt::KeepAspectRatio, Qt::SmoothTransformation );
+qDebug() << size();  
   update();
 }
 
@@ -447,7 +452,7 @@ void NWMainWindow::slotItemActivated( QTreeWidgetItem *item, int column )
 
 void NWMainWindow::slotCurrentItemChanged( QTreeWidgetItem *current, QTreeWidgetItem *previous )
 {
-  timer->start( 100 );
+  if( first_load++ > 0 ) timer->start( 100 );
 }
 
 
@@ -590,7 +595,7 @@ void NWMainWindow::slotRandomItem()
 
 void NWMainWindow::slotHelp()
 {
-  display_help();
+  display_help( this );
 };
 
 void NWMainWindow::slotAbout()

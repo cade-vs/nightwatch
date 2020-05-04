@@ -48,7 +48,7 @@ void NWHelpBrowser::keyPressEvent ( QKeyEvent * e )
 
 NWHelpBrowser *help_browser;
 
-void display_help()
+void display_help( NWMainWindow* main_window )
 {
   if( help_browser == NULL )
     help_browser = new NWHelpBrowser;
@@ -57,8 +57,16 @@ void display_help()
   help_browser->setObjectName( "NWHelpWindow" );
   help_browser->setWindowTitle( "NightWatch/4 Help" );
 
-  help_browser->resize( 640, 400 );
-  help_browser->move( 100, 100 );
+  if( main_window )
+    {
+    help_browser->resize( main_window->size() );
+    help_browser->move( main_window->pos() );
+    }
+  else
+    {
+    help_browser->resize( 800, 600 );
+    help_browser->move( 100, 100 );
+    }  
 
   help_browser->show();
 };

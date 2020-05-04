@@ -12,6 +12,8 @@
 
 #include <QTextBrowser>
 
+#include "nw_main_win.h"
+
 class NWHelpBrowser : public QTextBrowser
 {
     Q_OBJECT
@@ -25,6 +27,6 @@ class NWHelpBrowser : public QTextBrowser
 
 extern NWHelpBrowser *help_browser;
 
-void display_help();
+void display_help( NWMainWindow* main_window );
 
 #endif

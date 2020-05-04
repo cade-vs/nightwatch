@@ -72,6 +72,7 @@ class NWMainWindow : public QMainWindow
      Q_OBJECT
 
      int rand_seeded;
+     int first_load; 
 
  public:
 
