@@ -331,8 +331,7 @@ void NWMainWindow::loadDir( QString path, int mode )
     
   if( movies_count > 1 && last_played )  
     {
-    QIcon lp_icon( ":/images/last-played.png" );
-    last_played->setIcon( 1, lp_icon );
+    last_played->setIcon( 1, QIcon( ":/images/last-played.png" ) );
     if( mode == 1 ) current = last_played;
     }
 
@@ -408,9 +407,8 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
     {
     QString ndir = cdir.absolutePath();
     LastPlayed.setValue( ndir, nw_item->fn );
-    QIcon lp_icon( ":/images/last-played.png" );
-    nw_item->setIcon( 1, lp_icon );
     if( last_played ) last_played->setIcon( 1, QIcon() );
+    nw_item->setIcon( 1, QIcon( ":/images/last-played.png" ) );
     last_played = nw_item;
 
     QStringList exec_args = { ndir + "/" + nw_item->fn };
