@@ -1,0 +1,20 @@
+
+-- allows keypad-only navigation
+-- arrow keys navigation
+-- / key changes sort order between NAME and MODIFY TIME
+-- * key go to random movie
+-- ENTER and RIGHT-ARROW key will play current movie or enter current directory
+-- INSERT key enters the keypad menu
+
+-- Auto-Play function goes to the next movie and play it for 3 movies with pause of 4 seconds between.
+   Pressing any key will cancel Auto-Play. Also it will be cancelled if end-of movies list reached.
+   
+-- Last-Played marker (red arrow) will be shown for last movie played in a directory if more than one
+   movie found.
+   When entering new directory, the last played movie will be selected as current position in the list.
+   
+-- When changing directory to the parent directory, the current position will be set to the name of
+   the last directory.
+
+-- Keypad Menu "Reload current directory" will re-read current directory without any caching.   
+

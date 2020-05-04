@@ -85,8 +85,6 @@ class NWMainWindow : public QMainWindow
      int             last_sort_col;
      Qt::SortOrder   last_sort_ord;
 
-     int             opt_dirs_only;
-
      int             auto_play;
      QTimer         *auto_play_timer;
      
@@ -137,7 +135,6 @@ class NWMainWindow : public QMainWindow
      void slotChangeDir();
      void slotHomeDir();
      void slotReloadDir();
-     void slotShowDirsOnly();
 
      void slotSortColumn1();
      void slotSortColumn3();

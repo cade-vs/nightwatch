@@ -1,11 +1,12 @@
 <a name=top>
-<h1>NightWatch Navigator Help</h1>
+<h1>NightWatch Movie Navigator Help</h1>
 
 
 <hr>
 <h2>Contents</h2>
 <ul>
-<li><a href=#main>Images List Browser Window</a>
+<li><a href=#main>Main Window</a>
+<li><a href=#notes>Notes</a>
 <li><a href=#credits>Credits</a>
 </ul>
 
@@ -13,47 +14,36 @@
 <hr>
 <a name=main>
 <a href=#top>[top]</a>
-<h2>Images List Browser Window</h2>
+<h2>Main Window</h2>
 
-For usual keyboard shortcuts check menus.
+<p><p>For usual keyboard shortcuts check menus.
 
-NightWatch navigation window handles the following keys:
+<p><p>Image view window handles the following keys:
 
-<dt><b>[</b></dt><dd>show previous image</dd>
-<dt><b>]</b></dt><dd>show next image</dd>
-<dt><b>*</b></dt><dd>show random image</dd>
-<dt><b>~</b></dt><dd>got to user home directory</dd>
-<dt><b>DELETE</b></dt><dd>moves all selected or current image to the trash can ($HOME/.qvv4_trash_can)</dd>
-
+<dt><b>UP/DOWN ARROWS (KEYPAD "8" and "2" )</b></dt><dd>Navigate throught current list</dd>
+<dt><b>LEFT ARROW (KEYPAD "4" )</b></dt><dd>Go to the parent directory</dd>
+<dt><b>RIGHT ARROW (KEYPAD "6" )</b></dt><dd>Play current movie or enter directory</dd>
+<dt><b>ENTER</b></dt><dd>Play current movie or enter directory</dd>
+<dt><b>/</b></dt><dd>Switch list sort order between NAME and MODIFY TIME</dd>
+<dt><b>*</b></dt><dd>Go to random list entry</dd>
+<dt><b>INSERT</b></dt><dd>Display keypad MENU</dd>
 
 <hr>
-<a name=view>
+<a name=notes>
 <a href=#top>[top]</a>
-<h2>Image View Window</h2>
+<h2>Notes</h2>
 
-Image view window handles the following keys:
+<p><p> Auto-Play function goes to the next movie and play it for 3 movies with pause of 4 seconds between.
+   Pressing any key will cancel Auto-Play. Also it will be cancelled if end-of movies list reached.
+   
+<p><p> Last-Played marker (red arrow) will be shown for last movie played in a directory if more than one
+   movie found.
+   When entering new directory, the last played movie will be selected as current position in the list.
+   
+<p><p> When changing directory to the parent directory, the current position will be set to the name of
+    the last directory.
 
-<dt><b>[</b> or <b>PageUp</b></dt><dd>show previous image</dd>
-<dt><b>]</b> or <b>PageDown</b></dt><dd>show next image</dd>
-<dt><b>Mouse Wheel Up/Down</b></dt><dd>show previous/next image</dd>
-<dt><b>*</b></dt><dd>show random image</dd>
-<dt><b>ARROW KEYS</b></dt><dd>move image window</dd>
-<dt><b>F3</b></dt><dd>show image list browser (if hidden)</dd>
-<dt><b>F4</b></dt><dd>close image</dd>
-<dt><b>ESC</b></dt><dd>close image</dd>
-<dt><b>ENTER</b></dt><dd>close image</dd>
-<dt><b>0</b></dt><dd>fit image to display if larger (scale down)</dd>
-<dt><b>1</b></dt><dd>show image at 100% (1:1)</dd>
-<dt><b>2</b></dt><dd>show image at 200%</dd>
-<dt><b>3</b></dt><dd>show image at 300%</dd>
-<dt><b>4</b></dt><dd>show image at 400%</dd>
-<dt><b>5</b></dt><dd>show image at 500%</dd>
-<dt><b>+</b></dt><dd>increase scale by 10%</dd>
-<dt><b>-</b></dt><dd>decrease scale by 10%</dd>
-<dt><b>z</b></dt><dd>scale image to screen size, keep aspect ratio</dd>
-<dt><b>x</b></dt><dd>scale image to screen size</dd>
-<dt><b>INSERT</b></dt><dd>center image</dd>
-<dt><b>DELETE</b></dt><dd>moves this image to the trash can ($HOME/.qvv4_trash_can)</dd>
+<p><p> Keypad Menu "Reload current directory" will re-read current directory without any caching.   
 
 
 <hr>
@@ -62,7 +52,7 @@ Image view window handles the following keys:
 <h2>Credits</h2>
 
 <p>
-NightWatch Navigator 2020 (c) Vladi Belperchinov Shabanski mailto:cade@bis.bg
+NightWatch Movie Navigator 2020 (c) Vladi Belperchinov Shabanski mailto:cade@bis.bg
 
 <p>
 ...

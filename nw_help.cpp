@@ -52,10 +52,10 @@ void display_help()
 {
   if( help_browser == NULL )
     help_browser = new NWHelpBrowser;
-  help_browser->setHtml( QString( QVariant( (const char*)(QResource( ":/NW_help.html" ).data()) ).toString() ) );
+  help_browser->setHtml( QString( QVariant( (const char*)(QResource( ":/nw_help.html" ).data()) ).toString() ) );
 
   help_browser->setObjectName( "NWHelpWindow" );
-  help_browser->setWindowTitle( "NW/4 Help" );
+  help_browser->setWindowTitle( "NightWatch/4 Help" );
 
   help_browser->resize( 640, 400 );
   help_browser->move( 100, 100 );

@@ -42,6 +42,7 @@
 #include "nw_main_win.h"
 #include "nw_help.h"
 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 
 /*****************************************************************************/
 
@@ -153,8 +154,6 @@ NWMainWindow::NWMainWindow()
 {
     rand_seeded = 0;
 
-    opt_dirs_only     = 0;
-
     last_sort_col = 1;
     last_sort_ord = Qt::AscendingOrder;
 
@@ -231,7 +230,6 @@ NWMainWindow::NWMainWindow()
     QFont status_bar_font(   QFont( "Coolvetica", 18, QFont::Bold, false ) );
     statusBar()->setFont( status_bar_font );
 
-
     timer = new QTimer( this );
     auto_play_timer = new QTimer( this );
 
@@ -284,8 +282,6 @@ void NWMainWindow::loadDir( QString path, int mode )
   for( int i = 0; i < info_list.count(); i++ )
     {
     QFileInfo fi = info_list.at( i );
-
-    if( opt_dirs_only && ! fi.isDir() ) continue;
 
     if( fi.fileName() == "."  ) continue;
     if( fi.fileName() == ".." ) continue;
@@ -543,14 +539,6 @@ void NWMainWindow::slotReloadDir()
   loadDir( cdir.absolutePath(), 0 );
 }
 
-void NWMainWindow::slotShowDirsOnly()
-{
-  opt_dirs_only = ! opt_dirs_only;
-  loadDir( cdir.absolutePath(), 1 );
-
-  statusBar()->showMessage( opt_dirs_only ? tr( "Show directories only" ) : tr( "Show all directories and files" ) );
-}
-
 void NWMainWindow::sortColumn( int n )
 {
   if( last_sort_col == n )
@@ -614,18 +602,16 @@ void NWMainWindow::slotAbout()
 
 void NWMainWindow::selectLastPlayLocation()
 {
-    QFont menu_font(   QFont( "Coolvetica", 20, QFont::Bold, false ) );
     QMenu menu( "Select last play location", this );
+    menu.setFont( QFont( "Coolvetica", 20, QFont::Bold, false ) );
 
     QAction *act_cancel = menu.addAction( "Cancel" );
     act_cancel->setShortcut( Qt::Key_Insert );
-    act_cancel->setFont( menu_font );
     menu.setActiveAction( act_cancel );
     
     for( int i = 0; i < 16; i++ )
       {
       QAction *act = menu.addAction( QString() + "Menu location " );
-      act->setFont( menu_font );
       }
 
     QAction *res = menu.exec( mapToGlobal( poster->pos() ) );
@@ -673,26 +659,37 @@ void NWMainWindow::cancelAutoPlay()
 
 void NWMainWindow::slotKeypadMenu()
 {
-    QFont menu_font(   QFont( "Coolvetica", 20, QFont::Bold, false ) );
     QMenu menu( "MENU", this );
+    menu.setFont( QFont( "Coolvetica", 20, QFont::Bold, false ) );
 
     QAction *act_cancel = menu.addAction( "Cancel" );
     act_cancel->setShortcut( Qt::Key_Insert );
-    act_cancel->setFont( menu_font );
+    act_cancel->setIcon( QIcon( ":/images/act-cancel.png" ) );
     menu.setActiveAction( act_cancel );
 
-//TODO: icons
+    QAction *act_last_loc = menu.addAction( "List last play locations" );
+    act_last_loc->setIcon( QIcon( ":/images/act-last-loc.png" ) );
 
-    QAction *act_last = menu.addAction( "List last play locations" );
-    act_last->setFont( menu_font );
+    QAction *act_auto_play = menu.addAction( "Auto-Play" );
+    act_auto_play->setIcon( QIcon( ":/images/act-auto-play.png" ) );
 
-    QAction *auto_play = menu.addAction( "Auto-Play" );
-    auto_play->setFont( menu_font );
+    QAction *act_reload_dir = menu.addAction( "Reload current directory" );
+    act_reload_dir->setIcon( QIcon( ":/images/act-reload.png" ) );
+
+    menu.addSeparator();
+    QAction *act_help = menu.addAction( "Help" );
+    act_help->setIcon( QIcon( ":/images/help-browser.png" ) );
+
+    QAction *act_about = menu.addAction( "About" );
+    act_about->setIcon( QIcon( ":/images/face-glasses.png" ) );
 
     QAction *res = menu.exec( mapToGlobal( poster->pos() ) );
 
-    if( res == act_last  ) return selectLastPlayLocation();
-    if( res == auto_play ) return beginAutoPlay();
+    if( res == act_last_loc   ) return selectLastPlayLocation();
+    if( res == act_auto_play  ) return beginAutoPlay();
+    if( res == act_reload_dir ) return slotReloadDir();
+    if( res == act_help       ) return slotHelp();
+    if( res == act_about      ) return slotAbout();
 };
 
 /*****************************************************************************/
@@ -834,10 +831,6 @@ void NWMainWindow::setupMenuBar()
 
     action = menu->addAction(tr("Load layout..."));
     connect(action, SIGNAL(triggered()), this, SLOT(loadLayout()));
-    action = menu->addAction(tr("Switch layout direction"));
-    connect(action, SIGNAL(triggered()), this, SLOT(switchLayoutDirection()));
-
-    menu->addSeparator();
 */
 
     action = menu->addAction( tr("&Reload directory"), this, SLOT(slotReloadDir()), Qt::Key_F5 );
@@ -850,17 +843,14 @@ void NWMainWindow::setupMenuBar()
 
     menu = menuBar()->addMenu( tr("&View"));
 
-    action = menu->addAction( tr("Show d&irectories only") );
-    action->setCheckable( true );
-    action->setChecked( opt_dirs_only );
-    action->setShortcut( Qt::AltModifier + Qt::Key_I );
-    connect( action, SIGNAL( toggled(bool) ), this, SLOT(slotShowDirsOnly()) );
-
-    menu->addSeparator();
-
     action = menu->addAction( tr("Sort by &Name"),        this, SLOT(slotSortColumn1()), Qt::AltModifier + Qt::Key_N );
     action = menu->addAction( tr("Sort by &Modify Time"), this, SLOT(slotSortColumn3()), Qt::AltModifier + Qt::Key_M );
     action = menu->addAction( tr("T&oggle between sort by Name or Modify Time"), this, SLOT(toggleSortColumns()), Qt::Key_Slash );
+
+    menu->addSeparator();
+
+    action = menu->addAction(tr("Switch layout direction"));
+    connect(action, SIGNAL(triggered()), this, SLOT(switchLayoutDirection()));
 
     /*--------------------------------------------------------------------*/
 
@@ -915,8 +905,9 @@ void NWMainWindow::showEvent(QShowEvent *event)
 
 void NWMainWindow::switchLayoutDirection()
 {
-    if (layoutDirection() == Qt::LeftToRight)
-        qApp->setLayoutDirection(Qt::RightToLeft);
+    QHBoxLayout *hbl = (QHBoxLayout*)(centralWidget()->layout());
+    if( hbl->direction() == QBoxLayout::LeftToRight )
+      hbl->setDirection( QBoxLayout::RightToLeft );
     else
-        qApp->setLayoutDirection(Qt::LeftToRight);
+      hbl->setDirection( QBoxLayout::LeftToRight );
 }

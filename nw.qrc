@@ -14,6 +14,10 @@
      <file>images/view_all.png</file>
      <file>images/video-x-generic.png</file>
      <file>images/last-played.png</file>
+     <file>images/act-last-loc.png</file>
+     <file>images/act-auto-play.png</file>
+     <file>images/act-cancel.png</file>
+     <file>images/act-reload.png</file>
 
      <file>images/image-broken.png</file>
 
