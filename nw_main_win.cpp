@@ -353,6 +353,7 @@ void NWMainWindow::loadDir( QString path, int mode )
 
 void NWPoster::loadImage( const QString file_name )
 {
+  if( fn == file_name ) return;
   fn = file_name;
   rescaleImage();
 qDebug() << "load image: " << fn;
@@ -361,7 +362,6 @@ qDebug() << "load image: " << fn;
 void NWPoster::rescaleImage()
 {
   if( fn == "" || ! im.load( fn ) ) im.load( QString( ":/images/journey_by_t1na.jpg" ) );
-//  im = im.scaled( QSize( width(), height() ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
   im = im.scaled( size(), Qt::KeepAspectRatio, Qt::SmoothTransformation );
   update();
 }
