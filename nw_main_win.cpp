@@ -338,7 +338,7 @@ void NWMainWindow::loadDir( QString path, int mode )
   if( current )
     tree->setCurrentItem( current );
 
-  statusBar()->showMessage( QString() + "Movies count: " + QVariant( movies_count ).toString() );
+  statusBar()->showMessage( QString() + "Press [INSERT] key for keypad menu. Movies count: " + QVariant( movies_count ).toString() );
 
   tree->resizeColumnToContents( 0 );
   tree->resizeColumnToContents( 1 );
