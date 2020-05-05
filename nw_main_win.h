@@ -106,6 +106,7 @@ class NWMainWindow : public QMainWindow
 
      int deleteItems( int current_only );
 
+     void addPlayLocation( QString location );
      void selectLastPlayLocation();
      void beginAutoPlay();
      void cancelAutoPlay();

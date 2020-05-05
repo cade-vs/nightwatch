@@ -137,7 +137,7 @@ void NWTreeWidget::keyPressEvent ( QKeyEvent * e )
 
   if( ( m == Qt::ShiftModifier || m == Qt::NoModifier ) && a >= '!' && a <= 'z' )
     {
-    findNextThe( QString( QVariant( a ).toChar() ) );
+    findNextThe( QVariant( a ).toString() );
     }
   else
     {
@@ -338,7 +338,7 @@ void NWMainWindow::loadDir( QString path, int mode )
   if( current )
     tree->setCurrentItem( current );
 
-  statusBar()->showMessage( QString() + "Press [INSERT] key for keypad menu. Movies count: " + QVariant( movies_count ).toString() );
+  statusBar()->showMessage( "Press [INSERT] key for keypad menu. Movies count: " + QVariant( movies_count ).toString() );
 
   tree->resizeColumnToContents( 0 );
   tree->resizeColumnToContents( 1 );
@@ -414,6 +414,8 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
     if( last_played ) last_played->setIcon( 1, QIcon() );
     nw_item->setIcon( 1, QIcon( ":/images/last-played.png" ) );
     last_played = nw_item;
+
+    addPlayLocation( ndir );
 
     QStringList exec_args = { ndir + "/" + nw_item->fn };
     QProcess mpl;
@@ -602,6 +604,22 @@ void NWMainWindow::slotAbout()
   poster->loadImage( ":/images/journey_by_t1na.jpg" );
 };
 
+void NWMainWindow::addPlayLocation( QString location )
+{
+  QVector<QString> locs;
+  locs.append( location );
+  
+  for( int i = 0; i < MAX_PLAY_LOCATIONS; i++ )
+    {
+    QString s = LastLocations.value( QVariant( i ).toString() ).toString();
+    if ( s == "" ) break;
+    if ( s == location ) continue;
+    locs.append( s );
+    }
+  for( int i = 0; i < locs.size(); i++ )
+    LastLocations.setValue( QVariant( i ).toString(), locs[i] );
+};
+
 void NWMainWindow::selectLastPlayLocation()
 {
     QMenu menu( "Select last play location", this );
@@ -611,13 +629,17 @@ void NWMainWindow::selectLastPlayLocation()
     act_cancel->setShortcut( Qt::Key_Insert );
     menu.setActiveAction( act_cancel );
     
-    for( int i = 0; i < 16; i++ )
+    for( int i = 0; i < MAX_PLAY_LOCATIONS; i++ )
       {
-      QAction *act = menu.addAction( QString() + "Menu location " );
+      QString s = LastLocations.value( QVariant( i ).toString() ).toString();
+      if( s == "" ) break;
+      menu.addAction( s );
       }
 
     QAction *res = menu.exec( mapToGlobal( poster->pos() ) );
     
+    if( ! res || res == act_cancel ) return;
+    loadDir( res->text(), 1 );
 };
 
 void NWMainWindow::slotAutoPlayNext()

@@ -20,6 +20,8 @@
 #define DEFAULT_MOVIES_EXTENSIONS_FILTER   ".AVI.MKV.MPG.MPEG.MP4.TS."
 #define DEFAULT_IMAGES_EXTENSIONS_FILTER   ".JPG.JPEG.PNG."
 
+#define MAX_PLAY_LOCATIONS  16
+
 const QString ITEM_TYPE_DIR( "[DIR]" );
 
 extern QDesktopWidget *Desktop;
@@ -31,12 +33,8 @@ extern QString images_extensions_filter;
 
 extern QSettings Settings;
 extern QSettings LastPlayed;
+extern QSettings LastLocations;
 
-extern int opt_thumbs_size;
-extern int opt_create_thumbs;
-extern int opt_create_smooth_thumbs;
-extern int opt_create_jpeg_thumbs;
-extern int opt_show_dir_thumbs;
 extern int opt_use_toolbar;
 
 

@@ -22,12 +22,8 @@ QString images_extensions_filter;
 
 QSettings Settings( "CSA", "NW4" );
 QSettings LastPlayed( "CSA", "NW4_LP" );
+QSettings LastLocations( "CSA", "NW4_LL" );
 
-int opt_thumbs_size;
-int opt_create_thumbs;
-int opt_create_smooth_thumbs;
-int opt_create_jpeg_thumbs;
-int opt_show_dir_thumbs;
 int opt_use_toolbar;
 
 int main(int argc, char **argv)
@@ -42,11 +38,6 @@ int main(int argc, char **argv)
   DeskW = Desktop->width();  // get width of screen
   DeskH = Desktop->height(); // get height of screen
 
-  opt_thumbs_size          = Settings.value( "thumbs_size", 128 ).toInt();
-  opt_create_thumbs        = Settings.value( "create_thumbs", 0 ).toInt();
-  opt_create_jpeg_thumbs   = Settings.value( "create_jpeg_thumbs", 0 ).toInt();
-  opt_create_smooth_thumbs = Settings.value( "create_smooth_thumbs", 1 ).toInt();
-  opt_show_dir_thumbs      = Settings.value( "opt_show_dir_thumbs", 0 ).toInt();
   opt_use_toolbar          = Settings.value( "use_toolbar", 1 ).toInt();
 
   movies_extensions_filter = Settings.value( "movies_extensions_filter", QString( DEFAULT_MOVIES_EXTENSIONS_FILTER ) ).toString();
@@ -62,7 +53,6 @@ int main(int argc, char **argv)
   
   NWMainWindow *main_win = new NWMainWindow();
   main_win->loadDir( target_dir, 1 );
-  main_win->show();
 
   return app.exec();
 }
