@@ -98,6 +98,8 @@ void NWTreeWidget::findNextThe( QString str )
 {
   NWTreeWidgetItem *lwi = (NWTreeWidgetItem*)currentItem();
 
+  str = str.toUpper();
+
   int i;
   int start;
 
@@ -116,9 +118,11 @@ void NWTreeWidget::findNextThe( QString str )
     lwi = (NWTreeWidgetItem*)topLevelItem( i );
 
     QString name = lwi->text( 1 ).toUpper();
-    if( name.indexOf( str.toUpper() ) == 0 ) break;
+
+    if( name.indexOf( str ) == 0 ) break;
     lwi = NULL;
     }
+
   if( lwi )
     {
     setCurrentItem( lwi );
@@ -137,7 +141,7 @@ void NWTreeWidget::keyPressEvent ( QKeyEvent * e )
 
   if( ( m == Qt::ShiftModifier || m == Qt::NoModifier ) && a >= '!' && a <= 'z' )
     {
-    findNextThe( QVariant( a ).toString() );
+    findNextThe( QString( a ) );
     }
   else
     {
@@ -155,8 +159,8 @@ NWMainWindow::NWMainWindow()
     rand_seeded = 0;
     first_load  = 0;
 
-    last_sort_col = 1;
-    last_sort_ord = Qt::AscendingOrder;
+    last_sort_col = Settings.value( "last_sort_col",  1  ).toInt();
+    last_sort_ord = Settings.value( "last_sort_ord", 'A' ).toInt();
 
     setAttribute( Qt::WA_DeleteOnClose );
 
@@ -204,7 +208,7 @@ NWMainWindow::NWMainWindow()
     tree->setIconSize( QSize( 64, 64 ) );
 
     tree->setSortingEnabled( 1 );
-    tree->sortByColumn( 1, Qt::AscendingOrder );
+    sortColumn( last_sort_col );
 
     tree->setDragEnabled( 1 );
 
@@ -543,18 +547,14 @@ void NWMainWindow::slotReloadDir()
   loadDir( cdir.absolutePath(), 0 );
 }
 
-void NWMainWindow::sortColumn( int n )
+void NWMainWindow::sortColumn( int n, int d )
 {
-  if( last_sort_col == n )
-    {
-    last_sort_ord = last_sort_ord == Qt::AscendingOrder ? Qt::DescendingOrder : Qt::AscendingOrder;
-    }
-  else
-    {
-    last_sort_ord = Qt::AscendingOrder;
-    }
   last_sort_col = n;
-  tree->sortByColumn( last_sort_col, last_sort_ord );
+  last_sort_ord = d;
+  
+  tree->sortByColumn( last_sort_col, last_sort_ord == 'A' ? Qt::AscendingOrder : Qt::DescendingOrder );
+  Settings.setValue( "last_sort_col", last_sort_col );
+  Settings.setValue( "last_sort_ord", last_sort_ord );
 };
 
 void NWMainWindow::toggleSortColumns()

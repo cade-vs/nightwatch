@@ -84,7 +84,7 @@ class NWMainWindow : public QMainWindow
      int             movies_count;
 
      int             last_sort_col;
-     Qt::SortOrder   last_sort_ord;
+     int             last_sort_ord;
 
      int             auto_play;
      QTimer         *auto_play_timer;
@@ -102,7 +102,7 @@ class NWMainWindow : public QMainWindow
      void goPrevNext( int r, int skip_dirs = 1 );
      void goPrevNextDir( int r );
 
-     void sortColumn( int n );
+     void sortColumn( int n, int d = 'A' );
 
      int deleteItems( int current_only );
 
