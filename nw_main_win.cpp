@@ -346,7 +346,7 @@ void NWMainWindow::loadDir( QString path, int mode )
   tree->resizeColumnToContents( 3 );
 
   show();
-  poster->loadImage( QString( ":/images/journey_by_t1na.jpg" ) );
+  if( first_load < 2 ) poster->loadImage( QString( ":/images/journey_by_t1na.jpg" ) );
 };
 
 /*****************************************************************************/
@@ -355,15 +355,14 @@ void NWPoster::loadImage( const QString file_name )
 {
   fn = file_name;
   rescaleImage();
+qDebug() << "load image: " << fn;
 };
 
 void NWPoster::rescaleImage()
 {
   if( fn == "" || ! im.load( fn ) ) im.load( QString( ":/images/journey_by_t1na.jpg" ) );
 //  im = im.scaled( QSize( width(), height() ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
-qDebug() << im.size();  
   im = im.scaled( size(), Qt::KeepAspectRatio, Qt::SmoothTransformation );
-qDebug() << size();  
   update();
 }
 
