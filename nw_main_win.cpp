@@ -436,7 +436,7 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
         }
       else
         {  
-        auto_play_timer->start( 4000 );
+        auto_play_timer->start( DEFAULT_AUTO_PLAY_PAUSE );
         statusBar()->showMessage( "*** Auto-Play is active for the next " + QVariant( auto_play - 1 ).toString() + " movie(s). Press any navigation key to cancel ***" );
         }
       }
@@ -620,7 +620,7 @@ void NWMainWindow::addPlayLocation( QString location )
     LastLocations.setValue( QVariant( i ).toString(), locs[i] );
 };
 
-void NWMainWindow::selectLastPlayLocation()
+void NWMainWindow::slotSelectLastPlayLocation()
 {
     QMenu menu( "Select last play location", this );
     menu.setFont( QFont( "Coolvetica", 20, QFont::Bold, false ) );
@@ -669,7 +669,7 @@ void NWMainWindow::beginAutoPlay()
     statusBar()->showMessage( "WARNING: Cannot start Auto-Play, need at least 1 movie." );
     return;
     }
-  auto_play = 4;
+  auto_play = DEFAULT_AUTO_PLAY + 1;
   enterCurrent();
 }
 
@@ -687,14 +687,15 @@ void NWMainWindow::slotKeypadMenu()
     menu.setFont( QFont( "Coolvetica", 20, QFont::Bold, false ) );
 
     QAction *act_cancel = menu.addAction( "Cancel" );
-    act_cancel->setShortcut( Qt::Key_Insert );
     act_cancel->setIcon( QIcon( ":/images/act-cancel.png" ) );
+    act_cancel->setShortcut( Qt::Key_Insert );
     menu.setActiveAction( act_cancel );
 
     QAction *act_last_loc = menu.addAction( "List last play locations" );
     act_last_loc->setIcon( QIcon( ":/images/act-last-loc.png" ) );
+    act_last_loc->setShortcut( Qt::Key_Delete );
 
-    QAction *act_auto_play = menu.addAction( "Auto-Play" );
+    QAction *act_auto_play = menu.addAction( "Auto-Play next " + QVariant( DEFAULT_AUTO_PLAY ).toString() + " movies with " + QVariant( int(DEFAULT_AUTO_PLAY_PAUSE / 1000) ).toString() + " seconds pause between them" );
     act_auto_play->setIcon( QIcon( ":/images/act-auto-play.png" ) );
 
     QAction *act_reload_dir = menu.addAction( "Reload current directory" );
@@ -709,7 +710,7 @@ void NWMainWindow::slotKeypadMenu()
 
     QAction *res = menu.exec( mapToGlobal( poster->pos() ) );
 
-    if( res == act_last_loc   ) return selectLastPlayLocation();
+    if( res == act_last_loc   ) return slotSelectLastPlayLocation();
     if( res == act_auto_play  ) return beginAutoPlay();
     if( res == act_reload_dir ) return slotReloadDir();
     if( res == act_help       ) return slotHelp();
@@ -894,6 +895,11 @@ void NWMainWindow::setupMenuBar()
     action = menu->addAction( tr("Go to &Random item"),   this, SLOT(slotRandomItem()), Qt::Key_Asterisk );
     action = menu->addAction( tr("Activate current item"),  this, SLOT(enterCurrent()), Qt::Key_Right );
     action = menu->addAction( tr("Keypad Menu"),  this, SLOT(slotKeypadMenu()), Qt::Key_Insert );
+
+    menu->addSeparator();
+
+    action = menu->addAction( tr("List "), this, SLOT(slotSelectLastPlayLocation()), Qt::Key_Delete );
+    action->setIcon( QIcon( ":/images/act-last-loc.png" ) );
 
     /*--------------------------------------------------------------------*/
 

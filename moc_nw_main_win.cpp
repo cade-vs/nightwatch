@@ -155,8 +155,8 @@ int NWTreeWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     return _id;
 }
 struct qt_meta_stringdata_NWMainWindow_t {
-    QByteArrayData data[29];
-    char stringdata0[374];
+    QByteArrayData data[30];
+    char stringdata0[401];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -193,7 +193,8 @@ QT_MOC_LITERAL(24, 309, 15), // "slotSortColumn3"
 QT_MOC_LITERAL(25, 325, 14), // "slotRandomItem"
 QT_MOC_LITERAL(26, 340, 14), // "slotKeypadMenu"
 QT_MOC_LITERAL(27, 355, 8), // "slotHelp"
-QT_MOC_LITERAL(28, 364, 9) // "slotAbout"
+QT_MOC_LITERAL(28, 364, 9), // "slotAbout"
+QT_MOC_LITERAL(29, 374, 26) // "slotSelectLastPlayLocation"
 
     },
     "NWMainWindow\0toggleSortColumns\0\0enter\0"
@@ -206,7 +207,7 @@ QT_MOC_LITERAL(28, 364, 9) // "slotAbout"
     "slotChangeDir\0slotHomeDir\0slotReloadDir\0"
     "slotSortColumn1\0slotSortColumn3\0"
     "slotRandomItem\0slotKeypadMenu\0slotHelp\0"
-    "slotAbout"
+    "slotAbout\0slotSelectLastPlayLocation"
 };
 #undef QT_MOC_LITERAL
 
@@ -216,7 +217,7 @@ static const uint qt_meta_data_NWMainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      20,   14, // methods
+      21,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -224,26 +225,27 @@ static const uint qt_meta_data_NWMainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  114,    2, 0x0a /* Public */,
-       3,    1,  115,    2, 0x0a /* Public */,
-       6,    0,  118,    2, 0x0a /* Public */,
-       7,    1,  119,    2, 0x0a /* Public */,
-      10,    0,  122,    2, 0x0a /* Public */,
-      11,    2,  123,    2, 0x0a /* Public */,
-      13,    2,  128,    2, 0x0a /* Public */,
-      16,    0,  133,    2, 0x0a /* Public */,
-      17,    0,  134,    2, 0x0a /* Public */,
-      18,    0,  135,    2, 0x0a /* Public */,
-      19,    0,  136,    2, 0x0a /* Public */,
-      20,    0,  137,    2, 0x0a /* Public */,
-      21,    0,  138,    2, 0x0a /* Public */,
-      22,    0,  139,    2, 0x0a /* Public */,
-      23,    0,  140,    2, 0x0a /* Public */,
-      24,    0,  141,    2, 0x0a /* Public */,
-      25,    0,  142,    2, 0x0a /* Public */,
-      26,    0,  143,    2, 0x0a /* Public */,
-      27,    0,  144,    2, 0x0a /* Public */,
-      28,    0,  145,    2, 0x0a /* Public */,
+       1,    0,  119,    2, 0x0a /* Public */,
+       3,    1,  120,    2, 0x0a /* Public */,
+       6,    0,  123,    2, 0x0a /* Public */,
+       7,    1,  124,    2, 0x0a /* Public */,
+      10,    0,  127,    2, 0x0a /* Public */,
+      11,    2,  128,    2, 0x0a /* Public */,
+      13,    2,  133,    2, 0x0a /* Public */,
+      16,    0,  138,    2, 0x0a /* Public */,
+      17,    0,  139,    2, 0x0a /* Public */,
+      18,    0,  140,    2, 0x0a /* Public */,
+      19,    0,  141,    2, 0x0a /* Public */,
+      20,    0,  142,    2, 0x0a /* Public */,
+      21,    0,  143,    2, 0x0a /* Public */,
+      22,    0,  144,    2, 0x0a /* Public */,
+      23,    0,  145,    2, 0x0a /* Public */,
+      24,    0,  146,    2, 0x0a /* Public */,
+      25,    0,  147,    2, 0x0a /* Public */,
+      26,    0,  148,    2, 0x0a /* Public */,
+      27,    0,  149,    2, 0x0a /* Public */,
+      28,    0,  150,    2, 0x0a /* Public */,
+      29,    0,  151,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -253,6 +255,7 @@ static const uint qt_meta_data_NWMainWindow[] = {
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 4, QMetaType::Int,    5,   12,
     QMetaType::Void, 0x80000000 | 4, 0x80000000 | 4,   14,   15,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -296,6 +299,7 @@ void NWMainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 17: _t->slotKeypadMenu(); break;
         case 18: _t->slotHelp(); break;
         case 19: _t->slotAbout(); break;
+        case 20: _t->slotSelectLastPlayLocation(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -337,13 +341,13 @@ int NWMainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 20)
+        if (_id < 21)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 20;
+        _id -= 21;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 20)
+        if (_id < 21)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 20;
+        _id -= 21;
     }
     return _id;
 }

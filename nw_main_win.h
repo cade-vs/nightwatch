@@ -107,16 +107,18 @@ class NWMainWindow : public QMainWindow
      int deleteItems( int current_only );
 
      void addPlayLocation( QString location );
-     void selectLastPlayLocation();
      void beginAutoPlay();
      void cancelAutoPlay();
 
  protected:
+
      void showEvent(QShowEvent *event);
      void keyPressEvent(QKeyEvent *event);
      void resizeEvent(QResizeEvent *event);
      void moveEvent(QMoveEvent *event);
+
  public slots:
+
      void toggleSortColumns();
 
      void enter( QTreeWidgetItem *item );
@@ -147,6 +149,7 @@ class NWMainWindow : public QMainWindow
      void slotHelp();
      void slotAbout();
      
+     void slotSelectLastPlayLocation();
 
  private:
      void setupMenuBar();
