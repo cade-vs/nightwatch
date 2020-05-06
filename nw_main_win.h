@@ -151,6 +151,12 @@ class NWMainWindow : public QMainWindow
      
      void slotSelectLastPlayLocation();
 
+     void slotSelectMainListBigFont();
+     void slotSelectMainListSmallFont();
+     void slotSelectKeyPadFont();
+     void slotStatusBarFont();
+     void slotResetFonts();
+
  private:
      void setupMenuBar();
 };

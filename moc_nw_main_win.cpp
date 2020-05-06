@@ -155,8 +155,8 @@ int NWTreeWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     return _id;
 }
 struct qt_meta_stringdata_NWMainWindow_t {
-    QByteArrayData data[30];
-    char stringdata0[401];
+    QByteArrayData data[35];
+    char stringdata0[509];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -194,7 +194,12 @@ QT_MOC_LITERAL(25, 325, 14), // "slotRandomItem"
 QT_MOC_LITERAL(26, 340, 14), // "slotKeypadMenu"
 QT_MOC_LITERAL(27, 355, 8), // "slotHelp"
 QT_MOC_LITERAL(28, 364, 9), // "slotAbout"
-QT_MOC_LITERAL(29, 374, 26) // "slotSelectLastPlayLocation"
+QT_MOC_LITERAL(29, 374, 26), // "slotSelectLastPlayLocation"
+QT_MOC_LITERAL(30, 401, 25), // "slotSelectMainListBigFont"
+QT_MOC_LITERAL(31, 427, 27), // "slotSelectMainListSmallFont"
+QT_MOC_LITERAL(32, 455, 20), // "slotSelectKeyPadFont"
+QT_MOC_LITERAL(33, 476, 17), // "slotStatusBarFont"
+QT_MOC_LITERAL(34, 494, 14) // "slotResetFonts"
 
     },
     "NWMainWindow\0toggleSortColumns\0\0enter\0"
@@ -207,7 +212,11 @@ QT_MOC_LITERAL(29, 374, 26) // "slotSelectLastPlayLocation"
     "slotChangeDir\0slotHomeDir\0slotReloadDir\0"
     "slotSortColumn1\0slotSortColumn3\0"
     "slotRandomItem\0slotKeypadMenu\0slotHelp\0"
-    "slotAbout\0slotSelectLastPlayLocation"
+    "slotAbout\0slotSelectLastPlayLocation\0"
+    "slotSelectMainListBigFont\0"
+    "slotSelectMainListSmallFont\0"
+    "slotSelectKeyPadFont\0slotStatusBarFont\0"
+    "slotResetFonts"
 };
 #undef QT_MOC_LITERAL
 
@@ -217,7 +226,7 @@ static const uint qt_meta_data_NWMainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      21,   14, // methods
+      26,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -225,27 +234,32 @@ static const uint qt_meta_data_NWMainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  119,    2, 0x0a /* Public */,
-       3,    1,  120,    2, 0x0a /* Public */,
-       6,    0,  123,    2, 0x0a /* Public */,
-       7,    1,  124,    2, 0x0a /* Public */,
-      10,    0,  127,    2, 0x0a /* Public */,
-      11,    2,  128,    2, 0x0a /* Public */,
-      13,    2,  133,    2, 0x0a /* Public */,
-      16,    0,  138,    2, 0x0a /* Public */,
-      17,    0,  139,    2, 0x0a /* Public */,
-      18,    0,  140,    2, 0x0a /* Public */,
-      19,    0,  141,    2, 0x0a /* Public */,
-      20,    0,  142,    2, 0x0a /* Public */,
-      21,    0,  143,    2, 0x0a /* Public */,
-      22,    0,  144,    2, 0x0a /* Public */,
-      23,    0,  145,    2, 0x0a /* Public */,
-      24,    0,  146,    2, 0x0a /* Public */,
-      25,    0,  147,    2, 0x0a /* Public */,
-      26,    0,  148,    2, 0x0a /* Public */,
-      27,    0,  149,    2, 0x0a /* Public */,
-      28,    0,  150,    2, 0x0a /* Public */,
-      29,    0,  151,    2, 0x0a /* Public */,
+       1,    0,  144,    2, 0x0a /* Public */,
+       3,    1,  145,    2, 0x0a /* Public */,
+       6,    0,  148,    2, 0x0a /* Public */,
+       7,    1,  149,    2, 0x0a /* Public */,
+      10,    0,  152,    2, 0x0a /* Public */,
+      11,    2,  153,    2, 0x0a /* Public */,
+      13,    2,  158,    2, 0x0a /* Public */,
+      16,    0,  163,    2, 0x0a /* Public */,
+      17,    0,  164,    2, 0x0a /* Public */,
+      18,    0,  165,    2, 0x0a /* Public */,
+      19,    0,  166,    2, 0x0a /* Public */,
+      20,    0,  167,    2, 0x0a /* Public */,
+      21,    0,  168,    2, 0x0a /* Public */,
+      22,    0,  169,    2, 0x0a /* Public */,
+      23,    0,  170,    2, 0x0a /* Public */,
+      24,    0,  171,    2, 0x0a /* Public */,
+      25,    0,  172,    2, 0x0a /* Public */,
+      26,    0,  173,    2, 0x0a /* Public */,
+      27,    0,  174,    2, 0x0a /* Public */,
+      28,    0,  175,    2, 0x0a /* Public */,
+      29,    0,  176,    2, 0x0a /* Public */,
+      30,    0,  177,    2, 0x0a /* Public */,
+      31,    0,  178,    2, 0x0a /* Public */,
+      32,    0,  179,    2, 0x0a /* Public */,
+      33,    0,  180,    2, 0x0a /* Public */,
+      34,    0,  181,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -255,6 +269,11 @@ static const uint qt_meta_data_NWMainWindow[] = {
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 4, QMetaType::Int,    5,   12,
     QMetaType::Void, 0x80000000 | 4, 0x80000000 | 4,   14,   15,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -300,6 +319,11 @@ void NWMainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 18: _t->slotHelp(); break;
         case 19: _t->slotAbout(); break;
         case 20: _t->slotSelectLastPlayLocation(); break;
+        case 21: _t->slotSelectMainListBigFont(); break;
+        case 22: _t->slotSelectMainListSmallFont(); break;
+        case 23: _t->slotSelectKeyPadFont(); break;
+        case 24: _t->slotStatusBarFont(); break;
+        case 25: _t->slotResetFonts(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -341,13 +365,13 @@ int NWMainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 21)
+        if (_id < 26)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 21;
+        _id -= 26;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 21)
+        if (_id < 26)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 21;
+        _id -= 26;
     }
     return _id;
 }

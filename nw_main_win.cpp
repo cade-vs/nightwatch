@@ -32,11 +32,10 @@
 #include <QPen>
 #include <QColor>
 #include <QMenu>
+#include <QFontDialog>
 
 #include <QTreeWidgetItem>
 #include <QAbstractItemView>
-
-#include <qdebug.h>
 
 #include "nw.h"
 #include "nw_main_win.h"
@@ -230,7 +229,6 @@ NWMainWindow::NWMainWindow()
     
     setCentralWidget( central_widget );
 
-    QFont status_bar_font(   QFont( "Coolvetica", 18, QFont::Bold, false ) );
     statusBar()->setFont( status_bar_font );
 
     timer = new QTimer( this );
@@ -270,9 +268,6 @@ void NWMainWindow::loadDir( QString path, int mode )
   NWTreeWidgetItem *current = NULL;
   last_played = NULL;
 
-  QFont font_big(   QFont( "Coolvetica", 24, QFont::Bold, false ) );
-  QFont font_small( QFont( "Coolvetica", 12, QFont::Bold, false ) );
-  
   QIcon icon_video(  ":/images/video-x-generic.png" );
   QIcon icon_folder( ":/images/folder.png" );
 
@@ -319,10 +314,10 @@ void NWMainWindow::loadDir( QString path, int mode )
     item->setText( 3, fi.lastModified().toString( "yyyy-MM-dd hh:mm:ss" ) );
     item->setTextAlignment( 2, Qt::AlignRight );
 
-    item->setFont( 0, font_small );
-    item->setFont( 1, font_big   );
-    item->setFont( 2, font_small );
-    item->setFont( 3, font_small );
+    item->setFont( 0, main_list_small_font );
+    item->setFont( 1, main_list_big_font   );
+    item->setFont( 2, main_list_small_font );
+    item->setFont( 3, main_list_small_font );
 
     tree->addTopLevelItem( item );
 
@@ -623,7 +618,7 @@ void NWMainWindow::addPlayLocation( QString location )
 void NWMainWindow::slotSelectLastPlayLocation()
 {
     QMenu menu( "Select last play location", this );
-    menu.setFont( QFont( "Coolvetica", 20, QFont::Bold, false ) );
+    menu.setFont( keypad_menu_font );
 
     QAction *act_cancel = menu.addAction( "Cancel" );
     act_cancel->setShortcut( Qt::Key_Insert );
@@ -684,7 +679,7 @@ void NWMainWindow::cancelAutoPlay()
 void NWMainWindow::slotKeypadMenu()
 {
     QMenu menu( "MENU", this );
-    menu.setFont( QFont( "Coolvetica", 20, QFont::Bold, false ) );
+    menu.setFont( keypad_menu_font );
 
     QAction *act_cancel = menu.addAction( "Cancel" );
     act_cancel->setIcon( QIcon( ":/images/act-cancel.png" ) );
@@ -715,6 +710,54 @@ void NWMainWindow::slotKeypadMenu()
     if( res == act_reload_dir ) return slotReloadDir();
     if( res == act_help       ) return slotHelp();
     if( res == act_about      ) return slotAbout();
+};
+
+void NWMainWindow::slotSelectMainListBigFont()
+{
+  bool ok;
+  QFont font = QFontDialog::getFont( &ok, main_list_big_font, this);
+  if( ! ok ) return;
+  main_list_big_font = font;
+  save_fonts_to_settings();
+};
+
+void NWMainWindow::slotSelectMainListSmallFont()
+{
+  bool ok;
+  QFont font = QFontDialog::getFont( &ok, main_list_small_font, this);
+  if( ! ok ) return;
+  main_list_small_font = font;
+  save_fonts_to_settings();
+};
+
+void NWMainWindow::slotSelectKeyPadFont()
+{
+  bool ok;
+  QFont font = QFontDialog::getFont( &ok, keypad_menu_font, this);
+  if( ! ok ) return;
+  keypad_menu_font = font;
+  save_fonts_to_settings();
+};
+
+void NWMainWindow::slotStatusBarFont()
+{
+  bool ok;
+  QFont font = QFontDialog::getFont( &ok, status_bar_font, this);
+  status_bar_font = font;
+  save_fonts_to_settings();
+  statusBar()->setFont( status_bar_font );
+  tree->setFocus( Qt::OtherFocusReason );
+};
+
+void NWMainWindow::slotResetFonts()
+{
+  main_list_big_font   = QFont( "Coolvetica", 24, QFont::Bold, false );
+  main_list_small_font = QFont( "Coolvetica", 12, QFont::Bold, false );
+  keypad_menu_font     = QFont( "Coolvetica", 20, QFont::Bold, false );
+  status_bar_font      = QFont( "Coolvetica", 18, QFont::Bold, false );
+  save_fonts_to_settings();
+  statusBar()->setFont( status_bar_font );
+  tree->setFocus( Qt::OtherFocusReason );
 };
 
 /*****************************************************************************/
@@ -913,6 +956,12 @@ void NWMainWindow::setupMenuBar()
     /*--------------------------------------------------------------------*/
 
     menu = menuBar()->addMenu( tr("&Settings"));
+    
+    action = menu->addAction( tr("Select main list BIG font"),   this, SLOT(slotSelectMainListBigFont()) );
+    action = menu->addAction( tr("Select main list small font"), this, SLOT(slotSelectMainListSmallFont()) );
+    action = menu->addAction( tr("Select keypad menu font"),     this, SLOT(slotSelectKeyPadFont()) );
+    action = menu->addAction( tr("Select status bar font"),      this, SLOT(slotStatusBarFont()) );
+    action = menu->addAction( tr("Reset all fonts to default"),  this, SLOT(slotResetFonts()) );
 
     menu->addSeparator();
 
