@@ -1,7 +1,9 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
 
-     <file>images/journey_by_t1na.jpg</file>
+     <file>images/journey_by_t1na.original.jpg</file>
+     <file>images/journey_by_t1na.credits.jpg</file>
+     <file>images/journey_by_t1na.notfound.jpg</file>
 
      <file>images/go-home.png</file>
      <file>images/go-up.png</file>

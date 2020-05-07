@@ -7,3 +7,4 @@ SOURCES      = nw.cpp nw_main_win.cpp nw_help.cpp
 RESOURCES    = nw.qrc
 TARGET       = nightwatch
 QT          += widgets
+OBJECTS_DIR  = .OBJ.nightwatch

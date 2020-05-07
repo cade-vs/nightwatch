@@ -17,7 +17,7 @@
 #include <QFont>
 #include <qdebug.h>
 
-#define NW_VERSION   "4.05"
+#define NW_VERSION   "2.05"
 
 #define DEFAULT_MOVIES_EXTENSIONS_FILTER   ".AVI.MKV.MPG.MPEG.MP4.TS."
 #define DEFAULT_IMAGES_EXTENSIONS_FILTER   ".JPG.JPEG.PNG."

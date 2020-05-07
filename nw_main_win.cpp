@@ -345,7 +345,7 @@ void NWMainWindow::loadDir( QString path, int mode )
   tree->resizeColumnToContents( 3 );
 
   show();
-  if( first_load < 2 ) poster->loadImage( QString( ":/images/journey_by_t1na.jpg" ) );
+  if( first_load < 2 ) poster->loadImage( QString( ":/images/journey_by_t1na.credits.jpg" ) );
 };
 
 /*****************************************************************************/
@@ -360,7 +360,7 @@ qDebug() << "load image: " << fn;
 
 void NWPoster::rescaleImage()
 {
-  if( fn == "" || ! im.load( fn ) ) im.load( QString( ":/images/journey_by_t1na.jpg" ) );
+  if( fn == "" || ! im.load( fn ) ) im.load( QString( ":/images/journey_by_t1na.notfound.jpg" ) );
   im = im.scaled( size(), Qt::KeepAspectRatio, Qt::SmoothTransformation );
   update();
 }
@@ -409,10 +409,14 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
   else
     {
     QString ndir = cdir.absolutePath();
-    LastPlayed.setValue( ndir, nw_item->fn );
-    if( last_played ) last_played->setIcon( 1, QIcon() );
-    nw_item->setIcon( 1, QIcon( ":/images/last-played.png" ) );
-    last_played = nw_item;
+
+    if( movies_count > 1 )
+      {
+      LastPlayed.setValue( ndir, nw_item->fn );
+      if( last_played ) last_played->setIcon( 1, QIcon() );
+      nw_item->setIcon( 1, QIcon( ":/images/last-played.png" ) );
+      last_played = nw_item;
+      }
 
     addPlayLocation( ndir );
 
@@ -596,7 +600,7 @@ void NWMainWindow::slotHelp()
 
 void NWMainWindow::slotAbout()
 {
-  poster->loadImage( ":/images/journey_by_t1na.jpg" );
+  poster->loadImage( ":/images/journey_by_t1na.credits.jpg" );
 };
 
 void NWMainWindow::addPlayLocation( QString location )
