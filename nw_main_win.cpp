@@ -306,7 +306,7 @@ void NWMainWindow::loadDir( QString path, int mode )
 
     item->fn = file_name;
 
-    file_name.replace( QRegularExpression( "\\.([^.]+)$" ), " <<\\1>>" );
+    file_name.replace( QRegularExpression( "\\.([^.]+)$" ), " [\\1]" );
     file_name.replace( QRegularExpression( "[_.]" ), " " );
     file_name.replace( QRegularExpression( "^THE (.+)", QRegularExpression::CaseInsensitiveOption ), "\\1 [The *]" );
     
