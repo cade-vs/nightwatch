@@ -33,9 +33,7 @@
 #include <QColor>
 #include <QMenu>
 #include <QFontDialog>
-
 #include <QTreeWidgetItem>
-#include <QAbstractItemView>
 
 #include "nw.h"
 #include "nw_main_win.h"
@@ -211,8 +209,6 @@ NWMainWindow::NWMainWindow()
 
     tree->setDragEnabled( 1 );
 
-    tree->setSelectionMode( QAbstractItemView::ExtendedSelection );
-
     setupMenuBar();
     
     QWidget *central_widget = new QWidget;
@@ -277,6 +273,7 @@ void NWMainWindow::loadDir( QString path, int mode )
   tree->clear();
   
   movies_count = 0;
+  movies_posters = 0;
   for( int i = 0; i < info_list.count(); i++ )
     {
     QFileInfo fi = info_list.at( i );
@@ -290,6 +287,7 @@ void NWMainWindow::loadDir( QString path, int mode )
     QString file_name = fi.fileName();
 
     NWTreeWidgetItem *item = new NWTreeWidgetItem();
+    if( ! current ) current = item;
 
     if( fi.isDir() )
       {
@@ -302,11 +300,13 @@ void NWMainWindow::loadDir( QString path, int mode )
       item->is_dir = 0;
       item->setIcon( 0, icon_video  );
       movies_count++;
+      
+      if( find_image_for_file( new_path, file_name ) != "" ) movies_posters++;
       }
 
     item->fn = file_name;
 
-    file_name.replace( QRegularExpression( "\\.([^.]+)$" ), " [\\1]" );
+    file_name.replace( QRegularExpression( "\\.([a-z_0-9]+)$" ), " [\\1]" );
     file_name.replace( QRegularExpression( "[_.]" ), " " );
     file_name.replace( QRegularExpression( "^THE (.+)", QRegularExpression::CaseInsensitiveOption ), "\\1 [The *]" );
     
@@ -334,9 +334,7 @@ void NWMainWindow::loadDir( QString path, int mode )
     if( mode == 1 ) current = last_played;
     }
 
-  tree->setCurrentItem( tree->topLevelItem( 0 ) );
-  if( current )
-    tree->setCurrentItem( current );
+  if( current ) tree->setCurrentItem( current );
 
   statusBar()->showMessage( "Press [INSERT] key for keypad menu. Movies count: " + QVariant( movies_count ).toString() );
 
@@ -346,6 +344,7 @@ void NWMainWindow::loadDir( QString path, int mode )
   tree->resizeColumnToContents( 3 );
 
   show();
+  qDebug() << "loaddir: " << first_load;
   if( first_load < 2 ) poster->loadImage( QString( ":/images/journey_by_t1na.credits.jpg" ) );
 };
 
@@ -457,35 +456,10 @@ void NWMainWindow::slotItemActivated( QTreeWidgetItem *item, int column )
 
 void NWMainWindow::slotCurrentItemChanged( QTreeWidgetItem *current, QTreeWidgetItem *previous )
 {
+  if( ! current ) return;
   if( first_load++ > 0 ) timer->start( 100 );
 }
 
-
-QString find_first_image_in_dir( QString dir )
-{
-  QDir tdir;
-  tdir.cd( dir );
-
-  QStringList filters = { "*" };
-
-  QFileInfoList info_list = tdir.entryInfoList( filters );
-
-  for( int i = 0; i < info_list.count(); i++ )
-    {
-    QFileInfo fi = info_list.at( i );
-
-    if( fi.fileName() == "."  ) continue;
-    if( fi.fileName() == ".." ) continue;
-
-    QString ext = "." + fi.suffix() + ".";
-
-    if( fi.isDir() || images_extensions_filter.indexOf( ext.toUpper() ) < 0 ) continue;
-
-    return QString( dir + "/" + fi.fileName() );
-    }
-    
-  return QString();  
-}
 
 void NWMainWindow::slotLoadCurrentImage()
 {
@@ -504,12 +478,12 @@ void NWMainWindow::slotLoadCurrentImage()
     }
   else
     {
-    found_image_name = abs_path + "/" + item_name;
-    found_image_name.replace( QRegularExpression( "\\.[^.]+$" ), ".jpg" ); // TODO: find optional ext, jpg, jpeg, png, etc.
+    found_image_name = find_image_for_file( abs_path, item_name );
+    //found_image_name = abs_path + "/" + item_name;
+    //found_image_name.replace( QRegularExpression( "\\.[^.]+$" ), ".jpg" ); // TODO: find optional ext, jpg, jpeg, png, etc.
+    if( movies_posters == 0 && ( found_image_name == "" || ! QFile::exists( found_image_name ) ) )
+      found_image_name = find_first_image_in_dir( abs_path );
     }  
-
-  if( ! QFile::exists( found_image_name ) )
-    found_image_name = find_first_image_in_dir( abs_path );
 
   poster->loadImage( found_image_name );
 }

@@ -11,9 +11,8 @@
 #define _NW_H_
 
 #include <QString>
-#include <QDesktopWidget>
-#include <QTextBrowser>
 #include <QSettings>
+#include <QString>
 #include <QFont>
 #include <qdebug.h>
 
@@ -27,10 +26,6 @@
 #define DEFAULT_AUTO_PLAY_PAUSE  4000
 
 const QString ITEM_TYPE_DIR( "[DIR]" );
-
-extern QDesktopWidget *Desktop;
-extern int DeskW;
-extern int DeskH;
 
 extern QString movies_extensions_filter;
 extern QString images_extensions_filter;
@@ -47,5 +42,7 @@ extern QFont status_bar_font;
 extern int opt_use_toolbar;
 
 void save_fonts_to_settings();
+QString find_first_image_in_dir( QString dir );
+QString find_image_for_file( QString dir, QString file_name );
 
 #endif

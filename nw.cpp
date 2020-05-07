@@ -13,10 +13,6 @@
 #include "nw_main_win.h"
 #include "nw_help.h"
 
-QDesktopWidget *Desktop;
-int DeskW;
-int DeskH;
-
 QString movies_extensions_filter;
 QString images_extensions_filter;
 
@@ -41,17 +37,66 @@ void save_fonts_to_settings()
   Settings.endGroup();
 }
 
+QString find_first_image_in_dir( QString dir )
+{
+  QDir tdir;
+  tdir.cd( dir );
+
+  QStringList filters = { "*" };
+
+  QFileInfoList info_list = tdir.entryInfoList( filters );
+
+  for( int i = 0; i < info_list.count(); i++ )
+    {
+    QFileInfo fi = info_list.at( i );
+
+    if( fi.fileName() == "."  ) continue;
+    if( fi.fileName() == ".." ) continue;
+
+    QString ext = "." + fi.suffix() + ".";
+
+    if( fi.isDir() || images_extensions_filter.indexOf( ext.toUpper() ) < 0 ) continue;
+
+    return QString( dir + "/" + fi.fileName() );
+    }
+    
+  return QString();  
+}
+
+QString find_image_for_file( QString dir, QString file_name )
+{
+  QString mask = file_name;
+  
+  mask.replace( QRegularExpression( "\\.([a-z_0-9]+)$" ), ".*" );
+
+  QDir tdir;
+  tdir.cd( dir );
+  tdir.setFilter( QDir::Files );
+
+  QStringList masks = { mask };
+
+  QFileInfoList info_list = tdir.entryInfoList( masks );
+
+  for( int i = 0; i < info_list.count(); i++ )
+    {
+    QFileInfo fi = info_list.at( i );
+
+    QString ext = "." + fi.suffix() + ".";
+
+    if( images_extensions_filter.indexOf( ext.toUpper() ) < 0 ) continue;
+
+    return QString( dir + "/" + fi.fileName() );
+    }
+    
+  return QString();  
+}
+
 int main(int argc, char **argv)
 {
   QApplication app( argc, argv );
   Q_INIT_RESOURCE(nw);
 
   help_browser = NULL;
-
-  Desktop = QApplication::desktop();
-
-  DeskW = Desktop->width();  // get width of screen
-  DeskH = Desktop->height(); // get height of screen
 
   opt_use_toolbar          = Settings.value( "use_toolbar", 1 ).toInt();
 

@@ -16,7 +16,6 @@
 #include <QMenu>
 #include <QString>
 #include <QDialog>
-#include <QPushButton>
 #include <QWidget>
 #include <QImage>
 #include <QTimer>
@@ -82,6 +81,7 @@ class NWMainWindow : public QMainWindow
 
      QDir            cdir;
      int             movies_count;
+     int             movies_posters;
 
      int             last_sort_col;
      int             last_sort_ord;
