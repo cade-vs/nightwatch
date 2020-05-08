@@ -218,8 +218,8 @@ NWMainWindow::NWMainWindow()
     layout->addWidget( poster, 1 );
     layout->addWidget( tree,   2 );
 
-    layout->setStretchFactor( poster, 1 );
-    layout->setStretchFactor( tree,   2 );
+    layout->setStretchFactor( poster, 2 );
+    layout->setStretchFactor( tree,   3 );
     
     layout->setSpacing( 0 );
     
@@ -479,8 +479,6 @@ void NWMainWindow::slotLoadCurrentImage()
   else
     {
     found_image_name = find_image_for_file( abs_path, item_name );
-    //found_image_name = abs_path + "/" + item_name;
-    //found_image_name.replace( QRegularExpression( "\\.[^.]+$" ), ".jpg" ); // TODO: find optional ext, jpg, jpeg, png, etc.
     if( movies_posters == 0 && ( found_image_name == "" || ! QFile::exists( found_image_name ) ) )
       found_image_name = find_first_image_in_dir( abs_path );
     }  
