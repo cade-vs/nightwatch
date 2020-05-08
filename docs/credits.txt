@@ -1,0 +1,6 @@
+NightWatch Movie Navigator (c) Vladi Belperchinov-Shabanski <cade@bis.bg> <shabanski@gmail.com>
+                           Github repo/site for Nightwatch: https://github.com/cade-vs/nightwatch
+"Journey" artwork (c) Martina Stipan <martina.stipan@gmail.com> https://www.deviantart.com/t1na
+Coolvetica Font (c) Typodermic Fonts https://typodermicfonts.com/coolvetica/
+Tango Icons (c) Tango Project http://tango-project.org/
+NightWatch created with Qt Toolkit (c) The Qt Company https://qt.io/
