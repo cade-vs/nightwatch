@@ -1,14 +1,14 @@
 
 
 
-#  NIGHTWATCH MOVIE NAVIGATOR
+#  NIGHTWATCH VIDEO NAVIGATOR
 ## 2020 (c) Vladi Belperchinov-Shabanski "Cade"
 
 ![Nightwatch Screenshot](screenshots/nightwatch-screenshot1.jpg)
 
 #  INTRODUCTION
 
-Nightwatch (NW) is directory browser for video media files (movies). It has 
+NightWatch (NW) is directory browser for video media files. It has 
 full keyboard access and can use single separated keypad 
 (also wireless keypads) for navigation.
 
@@ -16,14 +16,14 @@ NW has all functions available in the main menu. However with single keypad
 the regular main menu is not accessible. Because of this there is the
 "keypad menu" accessible with INSERT key.
 
-NW has Auto-Play function, which goes to the next movie and play it for the 
-next 3 movies in the list with pause of 4 seconds between.
+NW has Auto-Play function, which goes to the next video file and play it for the 
+next 3 video files in the list with pause of 4 seconds between.
 Pressing any key during the pause will cancel Auto-Play. 
-Also it will be cancelled if end-of movies list reached.
+Also it will be cancelled if end-of video files list reached.
    
-NW shows Last-Played marker (red arrow) for the last movie played in a 
-directory if more than one movie found. When entering new directory, the 
-last played movie will be selected as current position in the list.
+NW shows Last-Played marker (red arrow) for the last video file played in a 
+directory if more than one video file found. When entering new directory, the 
+last played video file will be selected as current position in the list.
    
 When changing directory to the parent directory, the current position will be 
 set to the name of the last directory.
@@ -37,7 +37,7 @@ Screenshots can be found in !["docs/screenshots"](docs/screenshots) directory.
 
 #  CREDITS
 
-    NightWatch Movie Navigator 
+    NightWatch Video Navigator 
     (c) Vladi Belperchinov-Shabanski <cade@bis.bg> <shabanski@gmail.com>
     Github repo/site for Nightwatch: https://github.com/cade-vs/nightwatch
 

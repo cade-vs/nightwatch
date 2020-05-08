@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-**  NightWatch Navigator
+**  NightWatch Video Navigator
 **  2020 (c) Vladi Belperchinov-Shabanski
 **  <cade@bis.bg> <shabanski@gmail.com> <cade@cpan.org>
-**  http://cade.datamax.bg/nw/
+**  https://github.com/cade-vs/nightwatch
 **
 ****************************************************************************/
 
@@ -272,8 +272,8 @@ void NWMainWindow::loadDir( QString path, int mode )
 
   tree->clear();
   
-  movies_count = 0;
-  movies_posters = 0;
+  videos_count = 0;
+  videos_posters = 0;
   for( int i = 0; i < info_list.count(); i++ )
     {
     QFileInfo fi = info_list.at( i );
@@ -282,7 +282,7 @@ void NWMainWindow::loadDir( QString path, int mode )
     if( fi.fileName() == ".." ) continue;
 
     QString ext = "." + fi.suffix() + ".";
-    if( ! fi.isDir() && movies_extensions_filter.indexOf( ext.toUpper() ) < 0 ) continue;
+    if( ! fi.isDir() && videos_extensions_filter.indexOf( ext.toUpper() ) < 0 ) continue;
 
     QString file_name = fi.fileName();
 
@@ -299,9 +299,9 @@ void NWMainWindow::loadDir( QString path, int mode )
       {
       item->is_dir = 0;
       item->setIcon( 0, icon_video  );
-      movies_count++;
+      videos_count++;
       
-      if( find_image_for_file( new_path, file_name ) != "" ) movies_posters++;
+      if( find_image_for_file( new_path, file_name ) != "" ) videos_posters++;
       }
 
     item->fn = file_name;
@@ -328,7 +328,7 @@ void NWMainWindow::loadDir( QString path, int mode )
     if( mode == 2 && last_path   == new_path + "/" + item->fn ) current     = item;
     }
     
-  if( movies_count > 1 && last_played )  
+  if( videos_count > 1 && last_played )  
     {
     last_played->setIcon( 1, QIcon( ":/images/last-played.png" ) );
     if( mode == 1 ) current = last_played;
@@ -336,7 +336,7 @@ void NWMainWindow::loadDir( QString path, int mode )
 
   if( current ) tree->setCurrentItem( current );
 
-  statusBar()->showMessage( "Press [INSERT] key for keypad menu. Movies count: " + QVariant( movies_count ).toString() );
+  statusBar()->showMessage( "Press [INSERT] key for keypad menu. Video files count: " + QVariant( videos_count ).toString() );
 
   tree->resizeColumnToContents( 0 );
   tree->resizeColumnToContents( 1 );
@@ -410,7 +410,7 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
     {
     QString ndir = cdir.absolutePath();
 
-    if( movies_count > 1 )
+    if( videos_count > 1 )
       {
       LastPlayed.setValue( ndir, nw_item->fn );
       if( last_played ) last_played->setIcon( 1, QIcon() );
@@ -422,7 +422,7 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
 
     QStringList exec_args = { ndir + "/" + nw_item->fn };
     QProcess mpl;
-    mpl.execute( "nw-movie-player", exec_args );
+    mpl.execute( "nightwatch-video-player", exec_args );
     mpl.waitForFinished();
     
     if( auto_play > 0 )
@@ -436,7 +436,7 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
       else
         {  
         auto_play_timer->start( DEFAULT_AUTO_PLAY_PAUSE );
-        statusBar()->showMessage( "*** Auto-Play is active for the next " + QVariant( auto_play - 1 ).toString() + " movie(s). Press any navigation key to cancel ***" );
+        statusBar()->showMessage( "*** Auto-Play is active for the next " + QVariant( auto_play - 1 ).toString() + " video file(s). Press any navigation key to cancel ***" );
         }
       }
     }
@@ -479,7 +479,7 @@ void NWMainWindow::slotLoadCurrentImage()
   else
     {
     found_image_name = find_image_for_file( abs_path, item_name );
-    if( movies_posters == 0 && ( found_image_name == "" || ! QFile::exists( found_image_name ) ) )
+    if( videos_posters == 0 && ( found_image_name == "" || ! QFile::exists( found_image_name ) ) )
       found_image_name = find_first_image_in_dir( abs_path );
     }  
 
@@ -636,9 +636,9 @@ void NWMainWindow::slotAutoPlayNext()
 
 void NWMainWindow::beginAutoPlay()
 {
-  if( movies_count < 1 )
+  if( videos_count < 1 )
     {
-    statusBar()->showMessage( "WARNING: Cannot start Auto-Play, need at least 1 movie." );
+    statusBar()->showMessage( "WARNING: Cannot start Auto-Play, need at least 1 video." );
     return;
     }
   auto_play = DEFAULT_AUTO_PLAY + 1;
@@ -667,7 +667,7 @@ void NWMainWindow::slotKeypadMenu()
     act_last_loc->setIcon( QIcon( ":/images/act-last-loc.png" ) );
     act_last_loc->setShortcut( Qt::Key_Delete );
 
-    QAction *act_auto_play = menu.addAction( "Auto-Play next " + QVariant( DEFAULT_AUTO_PLAY ).toString() + " movies with " + QVariant( int(DEFAULT_AUTO_PLAY_PAUSE / 1000) ).toString() + " seconds pause between them" );
+    QAction *act_auto_play = menu.addAction( "Auto-Play next " + QVariant( DEFAULT_AUTO_PLAY ).toString() + " videos" );
     act_auto_play->setIcon( QIcon( ":/images/act-auto-play.png" ) );
 
     QAction *act_reload_dir = menu.addAction( "Reload current directory" );

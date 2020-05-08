@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-**  NightWatch Navigator
+**  NightWatch Video Navigator
 **  2020 (c) Vladi Belperchinov-Shabanski
 **  <cade@bis.bg> <shabanski@gmail.com> <cade@cpan.org>
-**  http://cade.datamax.bg/NW/
+**  https://github.com/cade-vs/nightwatch
 **
 ****************************************************************************/
 

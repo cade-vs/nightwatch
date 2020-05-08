@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-**  NightWatch Navigator
+**  NightWatch Video Navigator
 **  2020 (c) Vladi Belperchinov-Shabanski
 **  <cade@bis.bg> <shabanski@gmail.com> <cade@cpan.org>
-**  http://cade.datamax.bg/nw/
+**  https://github.com/cade-vs/nightwatch
 **
 ****************************************************************************/
 
@@ -18,7 +18,7 @@
 
 #define NW_VERSION   "2.05"
 
-#define DEFAULT_MOVIES_EXTENSIONS_FILTER   ".AVI.MKV.MPG.MPEG.MP4.TS."
+#define DEFAULT_VIDEOS_EXTENSIONS_FILTER   ".AVI.MKV.MPG.MPEG.MP4.TS."
 #define DEFAULT_IMAGES_EXTENSIONS_FILTER   ".JPG.JPEG.PNG."
 
 #define MAX_PLAY_LOCATIONS         16
@@ -27,7 +27,7 @@
 
 const QString ITEM_TYPE_DIR( "[DIR]" );
 
-extern QString movies_extensions_filter;
+extern QString videos_extensions_filter;
 extern QString images_extensions_filter;
 
 extern QSettings Settings;

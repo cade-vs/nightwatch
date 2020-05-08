@@ -2,16 +2,16 @@
 -- allows keypad-only navigation
 -- arrow keys navigation
 -- / key changes sort order between NAME and MODIFY TIME
--- * key go to random movie
--- ENTER and RIGHT-ARROW key will play current movie or enter current directory
+-- * key go to random video
+-- ENTER and RIGHT-ARROW key will play current video or enter current directory
 -- INSERT key enters the keypad menu
 
--- Auto-Play function goes to the next movie and play it for 3 movies with pause of 4 seconds between.
-   Pressing any key will cancel Auto-Play. Also it will be cancelled if end-of movies list reached.
+-- Auto-Play function goes to the next video and play it for 3 videos with pause of 4 seconds between.
+   Pressing any key will cancel Auto-Play. Also it will be cancelled if end-of videos list reached.
    
--- Last-Played marker (red arrow) will be shown for last movie played in a directory if more than one
-   movie found.
-   When entering new directory, the last played movie will be selected as current position in the list.
+-- Last-Played marker (red arrow) will be shown for last video played in a directory if more than one
+   video found.
+   When entering new directory, the last played video will be selected as current position in the list.
    
 -- When changing directory to the parent directory, the current position will be set to the name of
    the last directory.

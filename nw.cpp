@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-**  NightWatch Navigator
+**  NightWatch Video Navigator
 **  2020 (c) Vladi Belperchinov-Shabanski
 **  <cade@bis.bg> <shabanski@gmail.com> <cade@cpan.org>
-**  http://cade.datamax.bg/NW/
+**  https://github.com/cade-vs/nightwatch
 **
 ****************************************************************************/
 
@@ -13,7 +13,7 @@
 #include "nw_main_win.h"
 #include "nw_help.h"
 
-QString movies_extensions_filter;
+QString videos_extensions_filter;
 QString images_extensions_filter;
 
 QSettings Settings( "CSA", "NW4" );
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
 
   opt_use_toolbar          = Settings.value( "use_toolbar", 1 ).toInt();
 
-  movies_extensions_filter = Settings.value( "movies_extensions_filter", QString( DEFAULT_MOVIES_EXTENSIONS_FILTER ) ).toString();
+  videos_extensions_filter = Settings.value( "videos_extensions_filter", QString( DEFAULT_VIDEOS_EXTENSIONS_FILTER ) ).toString();
   images_extensions_filter = Settings.value( "images_extensions_filter", QString( DEFAULT_IMAGES_EXTENSIONS_FILTER ) ).toString();
 
   Settings.beginGroup( "fonts" );

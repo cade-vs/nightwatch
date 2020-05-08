@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-**  NightWatch Navigator
+**  NightWatch Video Navigator
 **  2020 (c) Vladi Belperchinov-Shabanski
 **  <cade@bis.bg> <shabanski@gmail.com> <cade@cpan.org>
-**  http://cade.datamax.bg/nw/
+**  https://github.com/cade-vs/nightwatch
 **
 ****************************************************************************/
 
@@ -80,8 +80,8 @@ class NWMainWindow : public QMainWindow
      QTimer         *timer;
 
      QDir            cdir;
-     int             movies_count;
-     int             movies_posters;
+     int             videos_count;
+     int             videos_posters;
 
      int             last_sort_col;
      int             last_sort_ord;
