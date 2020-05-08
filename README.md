@@ -35,6 +35,50 @@ Nightwatch is written entirely in C++ with Qt Toolkit.
 
 Screenshots can be found in !["docs/screenshots"](docs/screenshots) directory.
 
+#  HOW TO COMPILE
+
+To compile NW you need Qt toolkit.
+   
+For Devuan/Debian you need the following packages:
+   
+   qt5-default (meta package)
+   qtbase5-dev
+   qt4-qmake
+   
+Those will pull further dependencies.
+   
+After installing needed packages, do the following:
+   
+   qmake nightwatch.pro
+   make
+   
+And you should get "nightwatch" binary.
+
+#  HOW TO USE
+
+NightWatch is just navigatior. It does not have vide player inside. You have
+to use separate one. I recommend to use MPlayer but you may use whatever
+player you like.
+
+To start vide playing, NightWatch will try to execute:
+
+    nightwatch-video-player
+    
+You need either to create shell script with this name, which will execute the
+wanted vide player or to sym-link the player with this name. 
+
+Sym-link:
+
+    ln -s /usr/bin/mplayer  /usr/local/bin/nightwatch-video-player
+    
+Shell script content should be something like:
+
+    #!/bin/bash
+    mplayer "$*"
+    # end of file
+
+If you have a problem with the setup, contact me (see contact details below).
+
 #  CREDITS
 
     NightWatch Video Navigator 
