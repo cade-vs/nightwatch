@@ -16,9 +16,9 @@
 QString videos_extensions_filter;
 QString images_extensions_filter;
 
-QSettings Settings( "CSA", "NW4" );
-QSettings LastPlayed( "CSA", "NW4_LP" );
-QSettings LastLocations( "CSA", "NW4_LL" );
+QSettings Settings( "CSA", "NW2" );
+QSettings LastPlayed( "CSA", "NW2_LP" );
+QSettings LastLocations( "CSA", "NW2_LL" );
 
 QFont main_list_big_font;
 QFont main_list_small_font;

@@ -31,9 +31,30 @@ set to the name of the last directory.
 Keypad menu "Reload current directory" will re-read current directory without 
 any caching.   
 
+For videos, files with the following extensions are 
+accepted: AVI, MKV, MPG, MPEG, MP4, TS.
+
 Nightwatch is written entirely in C++ with Qt Toolkit.
 
 Screenshots can be found in !["docs/screenshots"](docs/screenshots) directory.
+
+#  POSTERS
+
+Each video file and directory with video files can have an image to represent
+them, i.e. "posters". Images are searched for with these rules:
+
+For a video file, NW looks for the same name image, for example:
+
+   testing.mp4
+   testing.jpg
+   
+If no image with the same name found, poster will be assumed to be the first
+found image in current directory, unless there are other video files with
+matching poster images.
+
+For directory, first found image inside directory will be assumed to be poster.
+
+For posters, files with the following extensions are accepted: JPG, JPEG, PNG.
 
 #  HOW TO COMPILE
 
@@ -78,6 +99,21 @@ Shell script content should be something like:
     # end of file
 
 If you have a problem with the setup, contact me (see contact details below).
+
+#  CONFIGURATION FILES
+
+Configuration file is created with default values but can be
+edited manually if needed:
+
+    $HOME/.config/CSA/NW2.conf
+
+There are few state files, which are not supposed to be edited:
+
+    # last locations with played videos
+    $HOME/.config/CSA/NW2_LL.conf
+
+    # last played videos for each visited location
+    $HOME/.config/CSA/NW2_LL.conf
 
 #  CREDITS
 
