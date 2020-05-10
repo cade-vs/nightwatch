@@ -34,6 +34,11 @@ any caching.
 NW will reload current directory if there are changes. Current position will 
 be preserved.
 
+If there is running video player, it will be stopped before new one is started.
+This prevents multiple players running when your cat steps on the keyboard :)
+If there is already running player, pressing ESC key in the NW main window 
+will stop the player.
+
 For videos, files with the following extensions are 
 accepted: AVI, MKV, MPG, MPEG, MP4, TS.
 
