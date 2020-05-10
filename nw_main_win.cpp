@@ -422,7 +422,7 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
 
     QStringList exec_args = { ndir + "/" + nw_item->fn };
     QProcess mpl;
-    mpl.execute( "nightwatch-video-player", exec_args );
+    mpl.startDetached( "nightwatch-video-player", exec_args );
     mpl.waitForFinished();
     
     if( auto_play > 0 )
