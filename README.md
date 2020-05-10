@@ -50,7 +50,11 @@ For a video file, NW looks for the same name image, for example:
    
 If no image with the same name found, poster will be assumed to be the first
 found image in current directory, unless there are other video files with
-matching poster images.
+matching poster images. Why is this? If there is several videos in a directory
+and there is a image, which does not match any video, it probably is a image
+representing all videos in the directory. However if there is at least one
+image matching a video file, the rule for first image in the directory does
+not apply anymore.
 
 For directory, first found image inside directory will be assumed to be poster.
 
