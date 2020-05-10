@@ -13,6 +13,7 @@
 #include <QString>
 #include <QSettings>
 #include <QString>
+#include <QProcess>
 #include <QFont>
 #include <qdebug.h>
 
@@ -38,6 +39,8 @@ extern QFont main_list_big_font;
 extern QFont main_list_small_font;
 extern QFont keypad_menu_font;
 extern QFont status_bar_font;
+
+extern QProcess player_process;
 
 extern int opt_use_toolbar;
 

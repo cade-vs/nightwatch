@@ -25,6 +25,8 @@ QFont main_list_small_font;
 QFont keypad_menu_font;
 QFont status_bar_font;
 
+QProcess player_process;
+
 int opt_use_toolbar;
 
 void save_fonts_to_settings()

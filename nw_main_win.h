@@ -19,6 +19,7 @@
 #include <QWidget>
 #include <QImage>
 #include <QTimer>
+#include <QFileSystemWatcher>
 
 class NWMainWindow;
 
@@ -82,6 +83,8 @@ class NWMainWindow : public QMainWindow
      QDir            cdir;
      int             videos_count;
      int             videos_posters;
+     
+     QFileSystemWatcher dir_watcher;
 
      int             last_sort_col;
      int             last_sort_ord;
@@ -139,6 +142,7 @@ class NWMainWindow : public QMainWindow
      void slotChangeDir();
      void slotHomeDir();
      void slotReloadDir();
+     void slotDirChanged( const QString &dir );
 
      void slotSortColumn1();
      void slotSortColumn3();

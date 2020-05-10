@@ -234,6 +234,7 @@ NWMainWindow::NWMainWindow()
     connect( auto_play_timer, SIGNAL(timeout()), this, SLOT(slotAutoPlayNext()));
     connect( tree,  SIGNAL(itemActivated(QTreeWidgetItem *, int)), this, SLOT(slotItemActivated(QTreeWidgetItem *, int)));
     connect( tree,  SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), this, SLOT(slotCurrentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)));
+    connect( &dir_watcher, SIGNAL(directoryChanged(const QString&)), this, SLOT(slotDirChanged(const QString&)) );
 }
 
 NWMainWindow::~NWMainWindow()
@@ -249,10 +250,14 @@ NWMainWindow::~NWMainWindow()
 void NWMainWindow::loadDir( QString path, int mode )
 {
   QString last_path = cdir.absolutePath();
+  
+  dir_watcher.removePath( last_path );
 
   cdir.cd( path );
 
   QString new_path = cdir.absolutePath();
+
+  dir_watcher.addPath( new_path );
 
   setWindowTitle( QString() + " NightWatch " + NW_VERSION + ": " + new_path );
 
@@ -421,8 +426,9 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
     addPlayLocation( ndir );
 
     QStringList exec_args = { ndir + "/" + nw_item->fn };
-    QProcess mpl;
-    mpl.startDetached( "nightwatch-video-player", exec_args );
+    
+    player_process.kill();
+    player_process.startDetached( "nightwatch-video-player", exec_args );
     
     if( auto_play > 0 )
       {
@@ -516,6 +522,11 @@ void NWMainWindow::slotHomeDir()
 void NWMainWindow::slotReloadDir()
 {
   loadDir( cdir.absolutePath(), 0 );
+}
+
+void NWMainWindow::slotDirChanged( const QString &dir )
+{
+  slotReloadDir();
 }
 
 void NWMainWindow::sortColumn( int n, int d )
