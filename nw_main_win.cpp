@@ -34,6 +34,7 @@
 #include <QMenu>
 #include <QFontDialog>
 #include <QTreeWidgetItem>
+#include <QThread>
 
 #include "nw.h"
 #include "nw_main_win.h"
@@ -427,8 +428,8 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
 
     QStringList exec_args = { ndir + "/" + nw_item->fn };
     
-    player_process.kill();
-    player_process.startDetached( "nightwatch-video-player", exec_args );
+    slotStopPlayer();
+    player_process.start( "nightwatch-video-player", exec_args );
     
     if( auto_play > 0 )
       {
@@ -574,6 +575,16 @@ void NWMainWindow::slotRandomItem()
   int n = int( r % x );
 
   tree->setCurrentItem( tree->topLevelItem( n ) );
+};
+
+void NWMainWindow::slotStopPlayer()
+{
+  if( player_process.state() != QProcess::Running ) return;
+  player_process.terminate();
+  player_process.waitForFinished( 1000 );
+  if( player_process.state() != QProcess::Running ) return;
+  player_process.kill();
+  player_process.waitForFinished( 1000 );
 };
 
 void NWMainWindow::slotHelp()
@@ -773,6 +784,7 @@ void NWMainWindow::keyPressEvent ( QKeyEvent * e )
     switch( e->key() )
       {
       case Qt::Key_F1: slotHelp(); break;
+      case Qt::Key_Escape : slotStopPlayer(); break;
 /*
       case Qt::Key_F3    : slotNewWindow(); break;
       case Qt::Key_F4    : close();

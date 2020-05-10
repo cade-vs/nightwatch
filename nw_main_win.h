@@ -150,6 +150,8 @@ class NWMainWindow : public QMainWindow
      void slotRandomItem();
      void slotKeypadMenu();
 
+     void slotStopPlayer();
+
      void slotHelp();
      void slotAbout();
      
