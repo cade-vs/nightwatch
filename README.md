@@ -31,6 +31,9 @@ set to the name of the last directory.
 Keypad menu "Reload current directory" will re-read current directory without 
 any caching.   
 
+NW will reload current directory if there are changes. Current position will 
+be preserved.
+
 For videos, files with the following extensions are 
 accepted: AVI, MKV, MPG, MPEG, MP4, TS.
 
