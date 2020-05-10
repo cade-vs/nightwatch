@@ -218,8 +218,8 @@ NWMainWindow::NWMainWindow()
     layout->addWidget( poster, 1 );
     layout->addWidget( tree,   2 );
 
-    layout->setStretchFactor( poster, 2 );
-    layout->setStretchFactor( tree,   3 );
+    layout->setStretchFactor( poster, 1 );
+    layout->setStretchFactor( tree,   2 );
     
     layout->setSpacing( 0 );
     
