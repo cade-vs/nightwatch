@@ -393,10 +393,7 @@ void NWMainWindow::goToDir( int mode )
 {
   mode = ! mode; // FIXME: for what??
   QFileDialog::Options options = QFileDialog::DontResolveSymlinks | QFileDialog::ShowDirsOnly;
-/*
-  if (!native->isChecked())
-      options |= QFileDialog::DontUseNativeDialog;
-*/
+
   QString new_dir = QFileDialog::getExistingDirectory( this,
                               tr( "Change directory" ),
                               cdir.absolutePath(),

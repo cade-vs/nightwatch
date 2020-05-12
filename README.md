@@ -89,16 +89,16 @@ And you should get "nightwatch" binary.
 
 #  HOW TO USE
 
-NightWatch is just navigatior. It does not have vide player inside. You have
+NightWatch is just navigatior. It does not have video player inside. You have
 to use separate one. I recommend to use MPlayer but you may use whatever
 player you like.
 
-To start vide playing, NightWatch will try to execute:
+To start video playing, NightWatch will try to execute:
 
     nightwatch-video-player
     
 You need either to create shell script with this name, which will execute the
-wanted vide player or to sym-link the player with this name. 
+wanted video player or to sym-link the player with this name. 
 
 Sym-link:
 
