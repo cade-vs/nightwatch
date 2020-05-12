@@ -4,7 +4,7 @@
 #  NIGHTWATCH VIDEO NAVIGATOR
 ## 2020 (c) Vladi Belperchinov-Shabanski "Cade"
 
-![Nightwatch Screenshot](screenshots/nightwatch-screenshot1.jpg)
+![NightWatch Screenshot](screenshots/nightwatch-screenshot1.jpg)
 
 #  INTRODUCTION
 
@@ -39,10 +39,10 @@ This prevents multiple players running when your cat steps on the keyboard :)
 If there is already running player, pressing ESC key in the NW main window 
 will stop the player.
 
-For videos, files with the following extensions are 
+Video files with the following extensions are 
 accepted: AVI, MKV, MPG, MPEG, MP4, TS.
 
-Nightwatch is written entirely in C++ with Qt Toolkit.
+NightWatch is written entirely in C++ with Qt Toolkit.
 
 Screenshots can be found in !["docs/screenshots"](docs/screenshots) directory.
 
@@ -66,7 +66,7 @@ not apply anymore.
 
 For directory, first found image inside directory will be assumed to be poster.
 
-For posters, files with the following extensions are accepted: JPG, JPEG, PNG.
+Poster (image) files with the following extensions are accepted: JPG, JPEG, PNG.
 
 #  HOW TO COMPILE
 
@@ -131,7 +131,7 @@ There are few state files, which are not supposed to be edited:
 
     NightWatch Video Navigator 
     (c) Vladi Belperchinov-Shabanski <cade@bis.bg> <shabanski@gmail.com>
-    Github repo/site for Nightwatch: https://github.com/cade-vs/nightwatch
+    Github repo/site for NightWatch: https://github.com/cade-vs/nightwatch
 
     "Journey" artwork 
     (c) Martina Stipan <martina.stipan@gmail.com> 
@@ -150,7 +150,7 @@ There are few state files, which are not supposed to be edited:
 
 #  LICENSE
 
-Nightwatch is licensed under GPLv2, for full text see file "COPYING".
+NightWatch is licensed under GPLv2, for full text see file "COPYING".
 
 #  CONTACT
 
