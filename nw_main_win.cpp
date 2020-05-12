@@ -366,7 +366,7 @@ void NWPoster::loadImage( const QString file_name )
   if( fn == file_name ) return;
   fn = file_name;
   rescaleImage();
-qDebug() << "load image: " << fn;
+  //qDebug() << "load image: " << fn;
 };
 
 void NWPoster::rescaleImage()
