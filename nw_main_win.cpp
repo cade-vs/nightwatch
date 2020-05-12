@@ -250,6 +250,8 @@ NWMainWindow::~NWMainWindow()
 
 void NWMainWindow::loadDir( QString path, int mode )
 {
+  statusBar()->showMessage( "Reading..." );
+
   QString last_path = cdir.absolutePath();
   
   dir_watcher.removePath( last_path );
@@ -269,6 +271,7 @@ void NWMainWindow::loadDir( QString path, int mode )
 
   NWTreeWidgetItem *current = NULL;
   last_played = NULL;
+  QString last_played_here = LastPlayed.value( new_path ).toString();
 
   QIcon icon_video(  ":/images/video-x-generic.png" );
   QIcon icon_folder( ":/images/folder.png" );
@@ -307,7 +310,7 @@ void NWMainWindow::loadDir( QString path, int mode )
       item->setIcon( 0, icon_video  );
       videos_count++;
       
-      if( find_image_for_file( new_path, file_name ) != "" ) videos_posters++;
+      if( ! item->is_dir && find_image_for_file( new_path, file_name ) != "" ) videos_posters++;
       }
 
     item->fn = file_name;
@@ -328,10 +331,12 @@ void NWMainWindow::loadDir( QString path, int mode )
 
     tree->addTopLevelItem( item );
 
-    if( ! last_played && LastPlayed.value( new_path ) == item->fn ) last_played = item;
+    if( ! last_played && last_played_here == item->fn ) last_played = item;
 
     if( mode == 0 && save_item_name == file_name              ) current     = item;
     if( mode == 2 && last_path   == new_path + "/" + item->fn ) current     = item;
+    
+    //qDebug() << "load dir: " << file_name;
     }
     
   if( videos_count > 1 && last_played )  
@@ -350,7 +355,7 @@ void NWMainWindow::loadDir( QString path, int mode )
   tree->resizeColumnToContents( 3 );
 
   show();
-  qDebug() << "loaddir: " << first_load;
+  //qDebug() << "loaddir: " << first_load;
   if( first_load < 2 ) poster->loadImage( QString( ":/images/journey_by_t1na.credits.jpg" ) );
 };
 
@@ -892,13 +897,6 @@ void NWMainWindow::setupMenuBar()
     menu = menuBar()->addMenu( tr("&File") );
 
     QAction *action;
-/*
-    action = menu->addAction(tr("Save layout..."));
-    connect(action, SIGNAL(triggered()), this, SLOT(saveLayout()));
-
-    action = menu->addAction(tr("Load layout..."));
-    connect(action, SIGNAL(triggered()), this, SLOT(loadLayout()));
-*/
 
     action = menu->addAction( tr("&Reload directory"), this, SLOT(slotReloadDir()), Qt::Key_F5 );
     action->setIcon( QIcon( ":/images/view-refresh.png" ) );

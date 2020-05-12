@@ -15,6 +15,7 @@
 
 QString videos_extensions_filter;
 QString images_extensions_filter;
+QStringList images_extensions_list;
 
 QSettings Settings( "CSA", "NW2" );
 QSettings LastPlayed( "CSA", "NW2_LP" );
@@ -69,25 +70,12 @@ QString find_image_for_file( QString dir, QString file_name )
 {
   QString mask = file_name;
   
-  mask.replace( QRegularExpression( "\\.([a-z_0-9]+)$" ), ".*" );
+  mask.replace( QRegularExpression( "\\.([a-z_0-9]+)$" ), "." );
 
-  QDir tdir;
-  tdir.cd( dir );
-  tdir.setFilter( QDir::Files );
-
-  QStringList masks = { mask };
-
-  QFileInfoList info_list = tdir.entryInfoList( masks );
-
-  for( int i = 0; i < info_list.count(); i++ )
+  for( int i = 0; i < images_extensions_list.count(); i++ )
     {
-    QFileInfo fi = info_list.at( i );
-
-    QString ext = "." + fi.suffix() + ".";
-
-    if( images_extensions_filter.indexOf( ext.toUpper() ) < 0 ) continue;
-
-    return QString( dir + "/" + fi.fileName() );
+    QString c = mask + images_extensions_list[i];
+    if( QFile::exists( c ) ) return c; 
     }
     
   return QString();  
@@ -104,6 +92,10 @@ int main(int argc, char **argv)
 
   videos_extensions_filter = Settings.value( "videos_extensions_filter", QString( DEFAULT_VIDEOS_EXTENSIONS_FILTER ) ).toString();
   images_extensions_filter = Settings.value( "images_extensions_filter", QString( DEFAULT_IMAGES_EXTENSIONS_FILTER ) ).toString();
+
+  images_extensions_list = images_extensions_filter.split( "." );
+  images_extensions_list.removeFirst();
+  images_extensions_list.removeLast();
 
   Settings.beginGroup( "fonts" );
   main_list_big_font.fromString(   Settings.value( "main_list_big_font",   QFont( "Coolvetica", 24, QFont::Bold, false ).toString() ).toString() );

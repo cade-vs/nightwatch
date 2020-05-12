@@ -15,6 +15,7 @@
 #include <QString>
 #include <QProcess>
 #include <QFont>
+#include <QStringList>
 #include <qdebug.h>
 
 #define NW_VERSION   "2.05"
@@ -30,6 +31,7 @@ const QString ITEM_TYPE_DIR( "[DIR]" );
 
 extern QString videos_extensions_filter;
 extern QString images_extensions_filter;
+extern QStringList images_extensions_list;
 
 extern QSettings Settings;
 extern QSettings LastPlayed;
