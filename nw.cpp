@@ -74,7 +74,7 @@ QString find_image_for_file( QString dir, QString file_name )
 
   for( int i = 0; i < images_extensions_list.count(); i++ )
     {
-    QString c = mask + images_extensions_list[i];
+    QString c = dir + "/" + mask + images_extensions_list[i];
     if( QFile::exists( c ) ) return c; 
     }
     
