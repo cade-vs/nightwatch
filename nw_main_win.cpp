@@ -431,22 +431,8 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
     QStringList exec_args = { ndir + "/" + nw_item->fn };
     
     slotStopPlayer();
+    connect( &player_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(slotPlayerFinished(int,QProcess::ExitStatus)) );
     player_process.start( "nightwatch-video-player", exec_args );
-    
-    if( auto_play > 0 )
-      {
-      auto_play--;
-      if( auto_play < 1 )
-        {
-        auto_play_timer->stop();
-        statusBar()->showMessage( "Auto-Play ended." );
-        }
-      else
-        {  
-        auto_play_timer->start( DEFAULT_AUTO_PLAY_PAUSE );
-        statusBar()->showMessage( "*** Auto-Play is active for the next " + QVariant( auto_play - 1 ).toString() + " video file(s). Press any navigation key to cancel ***" );
-        }
-      }
     }
 };
 
@@ -456,6 +442,24 @@ void NWMainWindow::enterCurrent()
 }
 
 /*****************************************************************************/
+
+void NWMainWindow::slotPlayerFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+  if( auto_play > 0 )
+    {
+    auto_play--;
+    if( auto_play < 1 )
+      {
+      auto_play_timer->stop();
+      statusBar()->showMessage( "Auto-Play ended." );
+      }
+    else
+      {  
+      auto_play_timer->start( DEFAULT_AUTO_PLAY_PAUSE );
+      statusBar()->showMessage( "*** Auto-Play is active for the next " + QVariant( auto_play - 1 ).toString() + " video file(s). Press any navigation key to cancel ***" );
+      }
+    }
+};
 
 void NWMainWindow::slotItemActivated( QTreeWidgetItem *item, int column )
 {

@@ -19,6 +19,7 @@
 #include <QWidget>
 #include <QImage>
 #include <QTimer>
+#include <QProcess>
 #include <QFileSystemWatcher>
 
 class NWMainWindow;
@@ -133,6 +134,8 @@ class NWMainWindow : public QMainWindow
      void slotItemActivated( QTreeWidgetItem *item, int column );
      void slotCurrentItemChanged( QTreeWidgetItem *current, QTreeWidgetItem *previous );
      void slotLoadCurrentImage();
+
+     void slotPlayerFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
      void slotAutoPlayNext();
 
