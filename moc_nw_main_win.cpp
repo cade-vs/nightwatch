@@ -155,8 +155,8 @@ int NWTreeWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     return _id;
 }
 struct qt_meta_stringdata_NWMainWindow_t {
-    QByteArrayData data[42];
-    char stringdata0[603];
+    QByteArrayData data[43];
+    char stringdata0[627];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -196,17 +196,18 @@ QT_MOC_LITERAL(27, 353, 14), // "slotDirChanged"
 QT_MOC_LITERAL(28, 368, 3), // "dir"
 QT_MOC_LITERAL(29, 372, 15), // "slotSortColumn1"
 QT_MOC_LITERAL(30, 388, 15), // "slotSortColumn3"
-QT_MOC_LITERAL(31, 404, 14), // "slotRandomItem"
-QT_MOC_LITERAL(32, 419, 14), // "slotKeypadMenu"
-QT_MOC_LITERAL(33, 434, 14), // "slotStopPlayer"
-QT_MOC_LITERAL(34, 449, 8), // "slotHelp"
-QT_MOC_LITERAL(35, 458, 9), // "slotAbout"
-QT_MOC_LITERAL(36, 468, 26), // "slotSelectLastPlayLocation"
-QT_MOC_LITERAL(37, 495, 25), // "slotSelectMainListBigFont"
-QT_MOC_LITERAL(38, 521, 27), // "slotSelectMainListSmallFont"
-QT_MOC_LITERAL(39, 549, 20), // "slotSelectKeyPadFont"
-QT_MOC_LITERAL(40, 570, 17), // "slotStatusBarFont"
-QT_MOC_LITERAL(41, 588, 14) // "slotResetFonts"
+QT_MOC_LITERAL(31, 404, 23), // "slotTogglePerDirSorting"
+QT_MOC_LITERAL(32, 428, 14), // "slotRandomItem"
+QT_MOC_LITERAL(33, 443, 14), // "slotKeypadMenu"
+QT_MOC_LITERAL(34, 458, 14), // "slotStopPlayer"
+QT_MOC_LITERAL(35, 473, 8), // "slotHelp"
+QT_MOC_LITERAL(36, 482, 9), // "slotAbout"
+QT_MOC_LITERAL(37, 492, 26), // "slotSelectLastPlayLocation"
+QT_MOC_LITERAL(38, 519, 25), // "slotSelectMainListBigFont"
+QT_MOC_LITERAL(39, 545, 27), // "slotSelectMainListSmallFont"
+QT_MOC_LITERAL(40, 573, 20), // "slotSelectKeyPadFont"
+QT_MOC_LITERAL(41, 594, 17), // "slotStatusBarFont"
+QT_MOC_LITERAL(42, 612, 14) // "slotResetFonts"
 
     },
     "NWMainWindow\0toggleSortColumns\0\0enter\0"
@@ -220,9 +221,10 @@ QT_MOC_LITERAL(41, 588, 14) // "slotResetFonts"
     "slotAutoPlayNext\0slotNewWindow\0slotGoUp\0"
     "slotChangeDir\0slotHomeDir\0slotReloadDir\0"
     "slotDirChanged\0dir\0slotSortColumn1\0"
-    "slotSortColumn3\0slotRandomItem\0"
-    "slotKeypadMenu\0slotStopPlayer\0slotHelp\0"
-    "slotAbout\0slotSelectLastPlayLocation\0"
+    "slotSortColumn3\0slotTogglePerDirSorting\0"
+    "slotRandomItem\0slotKeypadMenu\0"
+    "slotStopPlayer\0slotHelp\0slotAbout\0"
+    "slotSelectLastPlayLocation\0"
     "slotSelectMainListBigFont\0"
     "slotSelectMainListSmallFont\0"
     "slotSelectKeyPadFont\0slotStatusBarFont\0"
@@ -236,7 +238,7 @@ static const uint qt_meta_data_NWMainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      29,   14, // methods
+      30,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -244,35 +246,36 @@ static const uint qt_meta_data_NWMainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  159,    2, 0x0a /* Public */,
-       3,    1,  160,    2, 0x0a /* Public */,
-       6,    0,  163,    2, 0x0a /* Public */,
-       7,    1,  164,    2, 0x0a /* Public */,
-      10,    0,  167,    2, 0x0a /* Public */,
-      11,    2,  168,    2, 0x0a /* Public */,
-      13,    2,  173,    2, 0x0a /* Public */,
-      16,    0,  178,    2, 0x0a /* Public */,
-      17,    2,  179,    2, 0x0a /* Public */,
-      21,    0,  184,    2, 0x0a /* Public */,
-      22,    0,  185,    2, 0x0a /* Public */,
-      23,    0,  186,    2, 0x0a /* Public */,
-      24,    0,  187,    2, 0x0a /* Public */,
-      25,    0,  188,    2, 0x0a /* Public */,
-      26,    0,  189,    2, 0x0a /* Public */,
-      27,    1,  190,    2, 0x0a /* Public */,
-      29,    0,  193,    2, 0x0a /* Public */,
-      30,    0,  194,    2, 0x0a /* Public */,
-      31,    0,  195,    2, 0x0a /* Public */,
-      32,    0,  196,    2, 0x0a /* Public */,
-      33,    0,  197,    2, 0x0a /* Public */,
-      34,    0,  198,    2, 0x0a /* Public */,
-      35,    0,  199,    2, 0x0a /* Public */,
-      36,    0,  200,    2, 0x0a /* Public */,
-      37,    0,  201,    2, 0x0a /* Public */,
-      38,    0,  202,    2, 0x0a /* Public */,
-      39,    0,  203,    2, 0x0a /* Public */,
-      40,    0,  204,    2, 0x0a /* Public */,
-      41,    0,  205,    2, 0x0a /* Public */,
+       1,    0,  164,    2, 0x0a /* Public */,
+       3,    1,  165,    2, 0x0a /* Public */,
+       6,    0,  168,    2, 0x0a /* Public */,
+       7,    1,  169,    2, 0x0a /* Public */,
+      10,    0,  172,    2, 0x0a /* Public */,
+      11,    2,  173,    2, 0x0a /* Public */,
+      13,    2,  178,    2, 0x0a /* Public */,
+      16,    0,  183,    2, 0x0a /* Public */,
+      17,    2,  184,    2, 0x0a /* Public */,
+      21,    0,  189,    2, 0x0a /* Public */,
+      22,    0,  190,    2, 0x0a /* Public */,
+      23,    0,  191,    2, 0x0a /* Public */,
+      24,    0,  192,    2, 0x0a /* Public */,
+      25,    0,  193,    2, 0x0a /* Public */,
+      26,    0,  194,    2, 0x0a /* Public */,
+      27,    1,  195,    2, 0x0a /* Public */,
+      29,    0,  198,    2, 0x0a /* Public */,
+      30,    0,  199,    2, 0x0a /* Public */,
+      31,    0,  200,    2, 0x0a /* Public */,
+      32,    0,  201,    2, 0x0a /* Public */,
+      33,    0,  202,    2, 0x0a /* Public */,
+      34,    0,  203,    2, 0x0a /* Public */,
+      35,    0,  204,    2, 0x0a /* Public */,
+      36,    0,  205,    2, 0x0a /* Public */,
+      37,    0,  206,    2, 0x0a /* Public */,
+      38,    0,  207,    2, 0x0a /* Public */,
+      39,    0,  208,    2, 0x0a /* Public */,
+      40,    0,  209,    2, 0x0a /* Public */,
+      41,    0,  210,    2, 0x0a /* Public */,
+      42,    0,  211,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -291,6 +294,7 @@ static const uint qt_meta_data_NWMainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,   28,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -332,17 +336,18 @@ void NWMainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 15: _t->slotDirChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 16: _t->slotSortColumn1(); break;
         case 17: _t->slotSortColumn3(); break;
-        case 18: _t->slotRandomItem(); break;
-        case 19: _t->slotKeypadMenu(); break;
-        case 20: _t->slotStopPlayer(); break;
-        case 21: _t->slotHelp(); break;
-        case 22: _t->slotAbout(); break;
-        case 23: _t->slotSelectLastPlayLocation(); break;
-        case 24: _t->slotSelectMainListBigFont(); break;
-        case 25: _t->slotSelectMainListSmallFont(); break;
-        case 26: _t->slotSelectKeyPadFont(); break;
-        case 27: _t->slotStatusBarFont(); break;
-        case 28: _t->slotResetFonts(); break;
+        case 18: _t->slotTogglePerDirSorting(); break;
+        case 19: _t->slotRandomItem(); break;
+        case 20: _t->slotKeypadMenu(); break;
+        case 21: _t->slotStopPlayer(); break;
+        case 22: _t->slotHelp(); break;
+        case 23: _t->slotAbout(); break;
+        case 24: _t->slotSelectLastPlayLocation(); break;
+        case 25: _t->slotSelectMainListBigFont(); break;
+        case 26: _t->slotSelectMainListSmallFont(); break;
+        case 27: _t->slotSelectKeyPadFont(); break;
+        case 28: _t->slotStatusBarFont(); break;
+        case 29: _t->slotResetFonts(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -384,13 +389,13 @@ int NWMainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 29)
+        if (_id < 30)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 29;
+        _id -= 30;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 29)
+        if (_id < 30)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 29;
+        _id -= 30;
     }
     return _id;
 }

@@ -149,6 +149,7 @@ class NWMainWindow : public QMainWindow
 
      void slotSortColumn1();
      void slotSortColumn3();
+     void slotTogglePerDirSorting();
 
      void slotRandomItem();
      void slotKeypadMenu();

@@ -20,6 +20,7 @@ QStringList images_extensions_list;
 QSettings Settings( "CSA", "NW2" );
 QSettings LastPlayed( "CSA", "NW2_LP" );
 QSettings LastLocations( "CSA", "NW2_LL" );
+QSettings LocalSort( "CSA", "NW2_LS" );
 
 QFont main_list_big_font;
 QFont main_list_small_font;
@@ -29,6 +30,7 @@ QFont status_bar_font;
 QProcess player_process;
 
 int opt_use_toolbar;
+int opt_use_per_directory_sorting;
 
 void save_fonts_to_settings()
 {
@@ -88,7 +90,8 @@ int main(int argc, char **argv)
 
   help_browser = NULL;
 
-  opt_use_toolbar          = Settings.value( "use_toolbar", 1 ).toInt();
+  opt_use_toolbar               = Settings.value( "use_toolbar",                   1 ).toInt();
+  opt_use_per_directory_sorting = Settings.value( "opt_use_per_directory_sorting", 0 ).toInt();
 
   videos_extensions_filter = Settings.value( "videos_extensions_filter", QString( DEFAULT_VIDEOS_EXTENSIONS_FILTER ) ).toString();
   images_extensions_filter = Settings.value( "images_extensions_filter", QString( DEFAULT_IMAGES_EXTENSIONS_FILTER ) ).toString();

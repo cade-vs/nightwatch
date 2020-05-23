@@ -36,6 +36,7 @@ extern QStringList images_extensions_list;
 extern QSettings Settings;
 extern QSettings LastPlayed;
 extern QSettings LastLocations;
+extern QSettings LocalSort;
 
 extern QFont main_list_big_font;
 extern QFont main_list_small_font;
@@ -45,6 +46,7 @@ extern QFont status_bar_font;
 extern QProcess player_process;
 
 extern int opt_use_toolbar;
+extern int opt_use_per_directory_sorting;
 
 void save_fonts_to_settings();
 QString find_first_image_in_dir( QString dir );

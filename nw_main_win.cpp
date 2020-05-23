@@ -260,6 +260,12 @@ void NWMainWindow::loadDir( QString path, int mode )
 
   QString new_path = cdir.absolutePath();
 
+  if( opt_use_per_directory_sorting )
+    {
+    last_sort_col = LocalSort.value( new_path, 1 ).toInt();
+    sortColumn( last_sort_col );
+    }
+
   dir_watcher.addPath( new_path );
 
   setWindowTitle( QString() + " NightWatch " + NW_VERSION + ": " + new_path );
@@ -347,7 +353,7 @@ void NWMainWindow::loadDir( QString path, int mode )
 
   if( current ) tree->setCurrentItem( current );
 
-  statusBar()->showMessage( "Press [INSERT] key for keypad menu. Video files count: " + QVariant( videos_count ).toString() );
+  statusBar()->showMessage( QString() + "Press [INSERT] or [0] for keypad menu, [DEL] or [.] for previous locations. " + ( last_sort_col == 1 ? "Sort by NAME" : "Sort by MODIFY TIME" ) + ". Videos: " + QVariant( videos_count ).toString() );
 
   tree->resizeColumnToContents( 0 );
   tree->resizeColumnToContents( 1 );
@@ -544,6 +550,8 @@ void NWMainWindow::sortColumn( int n, int d )
   tree->sortByColumn( last_sort_col, last_sort_ord == 'A' ? Qt::AscendingOrder : Qt::DescendingOrder );
   Settings.setValue( "last_sort_col", last_sort_col );
   Settings.setValue( "last_sort_ord", last_sort_ord );
+  if( opt_use_per_directory_sorting )
+    LocalSort.setValue( cdir.absolutePath(), last_sort_col );
 };
 
 void NWMainWindow::toggleSortColumns()
@@ -569,6 +577,13 @@ void NWMainWindow::slotSortColumn1()
 void NWMainWindow::slotSortColumn3()
 {
   sortColumn( 3 );
+};
+
+void NWMainWindow::slotTogglePerDirSorting()
+{
+  opt_use_per_directory_sorting = ! opt_use_per_directory_sorting;
+  Settings.setValue( "opt_use_per_directory_sorting", opt_use_per_directory_sorting );
+  statusBar()->showMessage( opt_use_per_directory_sorting ? "Local (per directory) sorting enabled" : "Global sorting enabled" );
 };
 
 void NWMainWindow::slotRandomItem()
@@ -699,6 +714,12 @@ void NWMainWindow::slotKeypadMenu()
 
     QAction *act_reload_dir = menu.addAction( "Reload current directory" );
     act_reload_dir->setIcon( QIcon( ":/images/act-reload.png" ) );
+
+    menu.addSeparator();
+    QAction *act_persort = menu.addAction( "Use local (per directory) sorting" );
+    act_persort->setCheckable( true );
+    act_persort->setChecked( opt_use_per_directory_sorting );
+    connect( act_persort, SIGNAL( toggled(bool) ), this, SLOT(slotTogglePerDirSorting()) );
 
     menu.addSeparator();
     QAction *act_help = menu.addAction( "Help" );
@@ -960,6 +981,11 @@ void NWMainWindow::setupMenuBar()
     action = menu->addAction( tr("Select keypad menu font"),     this, SLOT(slotSelectKeyPadFont()) );
     action = menu->addAction( tr("Select status bar font"),      this, SLOT(slotStatusBarFont()) );
     action = menu->addAction( tr("Reset all fonts to default"),  this, SLOT(slotResetFonts()) );
+
+    action = menu->addAction( "Use local (per directory) sorting" );
+    action->setCheckable( true );
+    action->setChecked( opt_use_per_directory_sorting );
+    connect( action, SIGNAL( toggled(bool) ), this, SLOT(slotTogglePerDirSorting()) );
 
     menu->addSeparator();
 
