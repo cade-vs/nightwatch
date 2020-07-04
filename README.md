@@ -53,8 +53,8 @@ them, i.e. "posters". Images are searched for with these rules:
 
 For a video file, NW looks for the same name image, for example:
 
-   testing.mp4
-   testing.jpg
+    testing.mp4
+    testing.jpg
    
 If no image with the same name found, poster will be assumed to be the first
 found image in current directory, unless there are other video files with
@@ -74,16 +74,16 @@ To compile NW you need Qt toolkit.
    
 For Devuan/Debian you need the following packages:
    
-   qt5-default (meta package)
-   qtbase5-dev
-   qt4-qmake
+    qt5-default (meta package)
+    qtbase5-dev
+    qt4-qmake
    
 Those will pull further dependencies.
    
 After installing needed packages, do the following:
    
-   qmake nightwatch.pro
-   make
+    qmake nightwatch.pro
+    make
    
 And you should get "nightwatch" binary.
 
