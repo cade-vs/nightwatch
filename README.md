@@ -157,6 +157,7 @@ NightWatch is licensed under GPLv2, for full text see file "COPYING".
 Questions and ideas, please, send to:
 
     Vladi Belperchinov-Shabanski "Cade"
-    <cade@bis.bg> <shabanski@gmail.com> <cade@cpan.org>
+    <cade@noxrun.com> <cade@bis.bg> <cade@cpan.org>
+    http://cade.noxrun.com
     https://github.com/cade-vs
     github repo: git@github.com:cade-vs/nightwatch.git
