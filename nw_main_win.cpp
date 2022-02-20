@@ -424,6 +424,8 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
     }
   else
     {
+    auto_play_timer->stop();
+    
     QString ndir = cdir.absolutePath();
 
     if( videos_count > 1 )
