@@ -18,7 +18,7 @@
 #include <QStringList>
 #include <qdebug.h>
 
-#define NW_VERSION   "2.05"
+#define NW_VERSION   "2.06"
 
 #define DEFAULT_VIDEOS_EXTENSIONS_FILTER   ".AVI.MKV.MPG.MPEG.MP4.M4V.TS."
 #define DEFAULT_IMAGES_EXTENSIONS_FILTER   ".JPG.JPEG.PNG."
