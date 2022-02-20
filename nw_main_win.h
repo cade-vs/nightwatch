@@ -147,8 +147,8 @@ class NWMainWindow : public QMainWindow
      void slotReloadDir();
      void slotDirChanged( const QString &dir );
 
-     void slotSortColumn1();
-     void slotSortColumn3();
+     void slotSortByName();
+     void slotSortByModTime();
      void slotTogglePerDirSorting();
 
      void slotRandomItem();

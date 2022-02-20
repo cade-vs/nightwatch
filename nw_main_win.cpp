@@ -35,6 +35,7 @@
 #include <QFontDialog>
 #include <QTreeWidgetItem>
 #include <QThread>
+#include <QRandomGenerator>
 
 #include "nw.h"
 #include "nw_main_win.h"
@@ -262,8 +263,9 @@ void NWMainWindow::loadDir( QString path, int mode )
 
   if( opt_use_per_directory_sorting )
     {
-    last_sort_col = LocalSort.value( new_path, 1 ).toInt();
-    sortColumn( last_sort_col );
+    last_sort_col = LocalSort.value( "COL." + new_path,  1  ).toInt();
+    last_sort_ord = LocalSort.value( "ORD." + new_path, 'A' ).toInt();
+    sortColumn( last_sort_col, last_sort_ord );
     }
 
   dir_watcher.addPath( new_path );
@@ -551,32 +553,35 @@ void NWMainWindow::sortColumn( int n, int d )
   Settings.setValue( "last_sort_col", last_sort_col );
   Settings.setValue( "last_sort_ord", last_sort_ord );
   if( opt_use_per_directory_sorting )
-    LocalSort.setValue( cdir.absolutePath(), last_sort_col );
+    {
+    LocalSort.setValue( "COL." + cdir.absolutePath(), last_sort_col );
+    LocalSort.setValue( "ORD." + cdir.absolutePath(), last_sort_ord );
+    }
 };
 
 void NWMainWindow::toggleSortColumns()
 {
   if( last_sort_col == 3 )
     {
-    sortColumn( 1 );
-    statusBar()->showMessage( QString( tr( "Sort entries by NAME" ) ) );
+    slotSortByName();
+    statusBar()->showMessage( QString( tr( "List sorted: NAME (A-Z)" ) ) );
     }
   else
     {
-    sortColumn( 3 );  
-    statusBar()->showMessage( QString( tr( "Sort entries by MODIFY TIME" ) ) );
+    slotSortByModTime();
+    statusBar()->showMessage( QString( tr( "List sorted: MODIFY TIME (newest first)" ) ) );
     }
   tree->scrollToItem( tree->currentItem() );  
 }
 
-void NWMainWindow::slotSortColumn1()
+void NWMainWindow::slotSortByName()
 {
   sortColumn( 1 );
 };
 
-void NWMainWindow::slotSortColumn3()
+void NWMainWindow::slotSortByModTime()
 {
-  sortColumn( 3 );
+  sortColumn( 3, 'D' );
 };
 
 void NWMainWindow::slotTogglePerDirSorting()
@@ -589,11 +594,12 @@ void NWMainWindow::slotTogglePerDirSorting()
 void NWMainWindow::slotRandomItem()
 {
   int x = tree->topLevelItemCount();
-  if( rand_seeded == 0 ) qsrand( QDateTime::currentDateTime().toTime_t() );
-  rand_seeded = 1;
-  int r = qrand();
+  //if( rand_seeded == 0 ) qsrand( QDateTime::currentDateTime().toTime_t() );
+  //rand_seeded = 1;
+  //int r = qrand();
+  unsigned int r = QRandomGenerator::global()->generate();
 
-  int n = int( r % x );
+  unsigned int n = int( r % x );
 
   tree->setCurrentItem( tree->topLevelItem( n ) );
 };
@@ -930,8 +936,8 @@ void NWMainWindow::setupMenuBar()
 
     menu = menuBar()->addMenu( tr("&View"));
 
-    action = menu->addAction( tr("Sort by &Name"),        this, SLOT(slotSortColumn1()), Qt::AltModifier + Qt::Key_N );
-    action = menu->addAction( tr("Sort by &Modify Time"), this, SLOT(slotSortColumn3()), Qt::AltModifier + Qt::Key_M );
+    action = menu->addAction( tr("Sort by &Name (A-Z)"),        this, SLOT(slotSortByName()), Qt::AltModifier + Qt::Key_N );
+    action = menu->addAction( tr("Sort by &Modify Time (newest first)"), this, SLOT(slotSortByModTime()), Qt::AltModifier + Qt::Key_M );
     action = menu->addAction( tr("T&oggle between sort by Name or Modify Time"), this, SLOT(toggleSortColumns()), Qt::Key_Slash );
 
     menu->addSeparator();
