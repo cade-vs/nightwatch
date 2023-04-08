@@ -412,13 +412,52 @@ void NWMainWindow::goToDir( int mode )
 
 /*****************************************************************************/
 
+QString isSingleVideoDir( QString target )
+{
+  QStringList filters;
+  filters.append( QString( "*" ) );
+
+  QDir dir;
+  dir.cd( target );
+
+  QFileInfoList info_list = dir.entryInfoList( filters );
+
+  QString found;
+  int videos_count = 0;
+  int dirs_count = 0;
+  for( int i = 0; i < info_list.count(); i++ )
+    {
+    QFileInfo fi = info_list.at( i );
+
+    if( fi.fileName() == "."  ) continue;
+    if( fi.fileName() == ".." ) continue;
+
+    if( fi.isDir() )
+      {
+      dirs_count++;
+      continue;
+      }
+
+    QString ext = "." + fi.suffix() + ".";
+    if( videos_extensions_filter.indexOf( ext.toUpper() ) < 0 ) continue;
+    
+    videos_count++;
+    found = fi.fileName();
+    }
+  
+  if( videos_count == 1 and dirs_count == 0 ) return found;
+  return QString();
+}
+
 void NWMainWindow::enter( QTreeWidgetItem *item )
 {
   if( ! item ) return;
 
   NWTreeWidgetItem *nw_item = (NWTreeWidgetItem*)item;
+  
+  QString single_video = nw_item->is_dir ? isSingleVideoDir( cdir.absolutePath() + "/" + nw_item->fn ) : "";
 
-  if( nw_item->is_dir )
+  if( nw_item->is_dir && single_video == "" )
     {
     loadDir( nw_item->fn, 1 );
     }
@@ -438,7 +477,9 @@ void NWMainWindow::enter( QTreeWidgetItem *item )
 
     addPlayLocation( ndir );
 
-    QStringList exec_args = { ndir + "/" + nw_item->fn };
+    QString fn = nw_item->fn;
+    if( single_video != "" ) fn += "/" + single_video;
+    QStringList exec_args = { ndir + "/" + fn };
     
     slotStopPlayer();
     connect( &player_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(slotPlayerFinished(int,QProcess::ExitStatus)) );

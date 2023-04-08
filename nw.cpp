@@ -8,6 +8,7 @@
 ****************************************************************************/
 
 #include <QApplication>
+#include <QScreen>
 
 #include "nw.h"
 #include "nw_main_win.h"
@@ -112,11 +113,31 @@ int main(int argc, char **argv)
   args.takeFirst(); // remove app name
   
   QString target_dir = ".";
-  
-  if( args.count() > 0 ) target_dir = args[0];
+
+  int opt_maximize = 0;
+  while( args.count() > 0 )
+    {
+    QString arg = args.takeFirst();
+    if( ! args.isEmpty() && ( arg == "--targetdir" || arg == "-d" ) )
+      {
+      target_dir = args.takeFirst();
+      continue;
+      }
+    if( arg == "--maximize" || arg == "-x" )
+      {
+      opt_maximize = 1;
+      continue;
+      }
+    }
   
   NWMainWindow *main_win = new NWMainWindow();
   main_win->loadDir( target_dir, 1 );
+  if( opt_maximize )
+    {
+    main_win->move( app.primaryScreen()->geometry().topLeft() );
+    main_win->resize( app.primaryScreen()->size() );
+    }
+    
 
   return app.exec();
 }
